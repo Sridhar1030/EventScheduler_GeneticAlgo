@@ -2,3 +2,6 @@
 /Connection/Backend/mysite/package-lock.json
 /Connection/Backend/mysite/package.json
 /Connection/Backend/mysite/node_modules
+/Connection/Backend/mysite/node_modules/asynckit
+/Connection/Backend/mysite/node_modules/axios
+/Connection/Backend/mysite/node_modules/combined-stream
