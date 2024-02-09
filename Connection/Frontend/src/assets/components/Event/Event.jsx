@@ -23,14 +23,16 @@ function Events() {
 
 
 
-            <div className='mt-5 ml-10 '>
-                {events.map(event => (
-                    <div  className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105' 
-                    key={event.id}>
-                        <p className='text-xl'>{event.name}</p>
-                    </div>
-                ))}
+            <div className='mt-5 ml-10'>
+        {events.map(event => (
+            <div className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105' key={event.id}>
+                <marquee>
+                <p className='text-xl'>{event.name}</p>
+                </marquee>
             </div>
+        ))}
+</div>
+
 
 
             
