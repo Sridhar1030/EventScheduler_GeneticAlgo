@@ -27,7 +27,7 @@ const Create = () => {
         <>
             <Navbar />
             <div className='flex justify-center align-middle items-center'>
-                <div className="w-72 ">
+                <div className="w-72 mt-10  ">
                     <div className="relative w-full min-w-[200px] h-10">
                         <input
                             type="text"
@@ -36,39 +36,36 @@ const Create = () => {
                             className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                             placeholder=" "
                         />
-                        <label className="block text-sm text-gray-500 mb-1">Event Name</label>
+                        <label className="block  text-gray-500 mb-1 text-xl">Event Name</label>
 
                     </div>
-                    <div className='gap-7 mt-5'>
+                    <div className='gap-7 mt-10'>
                         <input
                             type="date"
                             value={eventDate}
                             onChange={(e) => setEventDate(e.target.value)}
                             className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
-                            placeholder=" "
+                            placeholder=""
                         />
-                        <label className="font-normal text-gray-500 text-sm mt-2">Event Date</label>
+                        <label className="font-normal text-gray-500 text-xl mt-2">Event Date</label>
                     </div>
                 </div>
             </div>
-            <div className='flex ml-32'></div>
             <div className='m-10 gap-10'>
-
                 <button
-                    className="relative inline-flex items-center mx-auto p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 dark:text-white "
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     onClick={handleCreateEvent}
                 >
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                        Create event
-                    </span>
+                    Create Event
                 </button>
             </div>
-            <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group">
-                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                    <Link to="/event">Link to Events</Link>
-                </span>
-            </button>
+            <div className='m-10 gap-10'>
+                <Link to="/event" className="px-4 py-2 text-sm font-medium text-blue-500 rounded-md shadow-md hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    View Events
+                </Link>
+            </div>
         </>
     );
 };
+
 export default Create;
