@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Create from './assets/components/Create/Create'
 import Event from './assets/components/Event/Event';
 import Home from './assets/components/Home/Home';
+import Delete from './assets/components/Delete/Delete';
 function App() {
 
   return (
@@ -11,6 +12,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<Create />} />
           <Route path="/event" element={<Event />} />
+          <Route path="/DELETE" element={<Delete />} />
         </Routes>
       </Router>
     </>

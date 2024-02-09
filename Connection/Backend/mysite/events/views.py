@@ -5,6 +5,15 @@ from .models import Event
 import json
 
 
+@csrf_exempt
+def clear_database(request):
+    try:
+        # Delete all records from your model
+        Event.objects.all().delete()
+        return JsonResponse({'message': 'Database cleared successfully'}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 def default_view(request):
     return HttpResponse("Welcome to the default view!")
 @csrf_exempt
