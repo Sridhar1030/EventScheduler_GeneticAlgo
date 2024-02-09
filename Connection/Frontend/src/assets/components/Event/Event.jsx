@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import Navbar from '../Navbar/Navbar';
 function Events() {
     const [events, setEvents] = useState([]);
     useEffect(() => {
@@ -16,6 +16,8 @@ function Events() {
 
     return (
         <div>
+            <Navbar/>
+            
             <ul>
                 {events.map(event => (
                     <li key={event.id}>{event.name}</li>
