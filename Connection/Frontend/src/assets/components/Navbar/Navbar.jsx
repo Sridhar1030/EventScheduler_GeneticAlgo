@@ -16,7 +16,8 @@ function Navbar() {
                     <div className='flex text-lg ml-14 space-x-10'>
                         <button><Link to="/create">Create Event</Link></button>
                         <button><Link to="/event">See Events</Link></button>
-                        <button><Link to="/orders">Your events</Link></button>
+                        <button><Link to="/enrolled">Your events</Link></button>
+                        <button><Link to="/schedule">Event Schedule</Link></button>
 
                     </div>
                 </div>

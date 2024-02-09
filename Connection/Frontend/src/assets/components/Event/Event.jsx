@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
+
 function Events() {
     const [events, setEvents] = useState([]);
+
     useEffect(() => {
         // Fetch events from Django backend
         axios.get('http://localhost:8000/api/get-events/')
@@ -15,15 +17,24 @@ function Events() {
     }, []); // Empty dependency array ensures the effect runs only once on component mount
 
     return (
-        <div>
+        <>
             <Navbar/>
-            
-            <ul>
+            <h1 className='border border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10'>LIVE EVENTS</h1>
+
+
+
+            <div className='mt-5 ml-10 '>
                 {events.map(event => (
-                    <li key={event.id}>{event.name}</li>
+                    <div  className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105' 
+                    key={event.id}>
+                        <p className='text-xl'>{event.name}</p>
+                    </div>
                 ))}
-            </ul>
-        </div>
+            </div>
+
+
+            
+        </>
     );
 }
 
