@@ -19,11 +19,14 @@ const YourEvents = () => {
     return (
         <>
             <Navbar />
-            <div className='border border-red-500 gap-10 w-96 h-52 mx-auto mt-10'>
                 {registeredEvents.map(event => (
-                    <h2>Event Name: {event.name}</h2>
-                ))}
+            <div className='border border-red-500 gap-10 w-96 h-28  mx-auto mt-10'>
+                    <>
+                    <h2 className='mt-5 ml-7'>Username: {event.username}</h2>
+                    <h2 className='ml-7'>Eventname: {event.event_name}</h2>
+                    </>
             </div>
+                ))}
         </>
     );
 }

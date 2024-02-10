@@ -51,8 +51,8 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class RegisteredEvent(models.Model):
-    user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
-    event_name = models.ForeignKey(Event, on_delete=models.CASCADE)
+    username = models.CharField(max_length=150)
+    event_name = models.CharField(max_length=255)  # Change to CharField or appropriate field type
 
     def __str__(self):
         return f"{self.user.email} - {self.event.name}"

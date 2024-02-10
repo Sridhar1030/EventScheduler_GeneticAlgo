@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios for making HTTP requests
 
-function EventForm({ eventName }) {
+function EventForm({ event_name }) {
     const [formData, setFormData] = useState({
         username: '', // Add username state
         event_name: '', // Add event_name state
@@ -32,7 +32,7 @@ function EventForm({ eventName }) {
             <div className='bg-black h-screen text-white'>
                 <div className='w-full h-10'></div> {/*Div for space*/}
                 <div className='flex flex-col top-10'>
-                    <h2 className='text-center text-4xl top-10 gap-10 mb-10'>Event Form for {eventName}</h2>
+                    <h2 className='text-center text-4xl top-10 gap-10 mb-10'>Event Form for {event_name}</h2>
                 </div>
                 <form className="max-w-sm mx-auto mt-24" onSubmit={handleSubmit}>
                     <div className="mb-5 gap-10">
