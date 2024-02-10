@@ -29,7 +29,10 @@ function Events() {
                 {/* <marquee scrollamount='3'> */}
                 <p className='text-xl'>{event.name}</p>
                 <div>
-                            <strong>Date:</strong> {event.date}
+                            <strong>Start Date:</strong> {event.date}
+                </div>
+                <div>
+                            <strong> End Date:</strong> {event.another_date}
                 </div>
                 {/* </marquee> */}
             </div>

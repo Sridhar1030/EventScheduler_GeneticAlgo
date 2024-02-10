@@ -23,9 +23,10 @@ def create_event(request):
             data = json.loads(request.body)
             event_name = data.get('eventName', '')
             event_date = data.get('eventDate', '')
-            
-            if event_name and event_date:
-                Event.objects.create(name=event_name, date=event_date)  # Include event_date when creating the Event
+            end_event_date = data.get('EndEventDate', '')  # Get the EndEventDate from the request data
+
+            if event_name and event_date and end_event_date:  # Ensure all fields are provided
+                Event.objects.create(name=event_name, date=event_date, another_date=end_event_date)
                 return JsonResponse({'message': 'Event created successfully'}, status=201)
             else:
                 return JsonResponse({'error': 'Invalid data'}, status=400)
@@ -40,5 +41,13 @@ def create_event(request):
 
 def get_events(request):
     events = Event.objects.all()
-    event_list = [{'id': event.id, 'name': event.name, 'date': event.date.strftime('%d-%m-%Y')} for event in events]
+    event_list = [
+        {
+            'id': event.id,
+            'name': event.name,
+            'date': event.date.strftime('%d-%m-%Y'),
+            'another_date': event.another_date.strftime('%d-%m-%Y')  # Format another_date field
+        }
+        for event in events
+    ]
     return JsonResponse(event_list, safe=False)
