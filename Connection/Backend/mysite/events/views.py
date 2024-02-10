@@ -1,9 +1,7 @@
-from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Event
 import json
-
 
 @csrf_exempt
 def clear_database(request):
@@ -16,6 +14,7 @@ def clear_database(request):
 
 def default_view(request):
     return HttpResponse("Welcome to the default view!")
+
 @csrf_exempt
 def create_event(request):
     if request.method == 'POST':
