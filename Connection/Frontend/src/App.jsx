@@ -10,6 +10,7 @@ import Event from './assets/components/Event/Event';
 import Home from './assets/components/Home/Home';
 import Delete from './assets/components/Delete/Delete';
 import EventForm from './assets/components/Event/EventForm';
+import YourEvents from './assets/components/YourEvents/YourEvents';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -36,6 +37,7 @@ function App() {
           <Route key={event.id} path={`/${event.name}`} element={<EventForm eventName={event.name} />} />
         ))}
 
+          <Route path="/enrolled" element={<YourEvents />} />
           <Route path="/DELETE" element={<Delete />} />
         </Routes>
       </Router>
