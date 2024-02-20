@@ -7,24 +7,31 @@ const Create = () => {
     const [eventName, setEventName] = useState('');
     const [eventDate, setEventDate] = useState('');
     const [EndEventDate, setEndEventDate] = useState('');
+    const [Time, setEventTime] = useState('');
+    const [EndTime, setEventEndTime] = useState('');
 
     const handleCreateEvent = async () => {
-        try {
-            if (eventName.trim() !== '' && eventDate.trim() !== ''&&EndEventDate.trim() !== '') {
-                // Send event name and event date to Django backend using POST
-                await axios.post('http://localhost:8000/api/create-event/', { eventName, eventDate,EndEventDate });
+    try {
+        if (eventName.trim() !== '' && eventDate.trim() !== '' && EndEventDate.trim() !== '') {
+            // Send event name, event date, start time, and end time to Django backend using POST
+            await axios.post('http://localhost:8000/api/create-event/', { eventName, eventDate, EndEventDate, Time, EndTime });
 
-                setEventName('');
-                setEventDate('');
-                setEndEventDate('');
-                alert('Event created successfully!');
-            } else {
-                alert('Please enter a valid event name Start date and End date.');
-            }
-        } catch (error) {
-            console.error('Error creating event:', error);
+            // Clear input fields after successful event creation
+            setEventName('');
+            setEventDate('');
+            setEndEventDate('');
+            setEventTime('');
+            setEventEndTime(''); // Reset EndTime to clear input field
+
+            alert('Event created successfully!');
+        } else {
+            alert('Please enter a valid event name, start date, and end date.');
         }
-    };
+    } catch (error) {
+        console.error('Error creating event:', error);
+    }
+};
+
 
     return (
         <>
@@ -60,6 +67,24 @@ const Create = () => {
                             placeholder=""
                         />
                         <label className="font-normal text-gray-500 text-xl mt-2"> Event End Date</label>
+
+                        <input
+                            type="time"
+                            value={Time}
+                            onChange={(e) => setEventTime(e.target.value)}
+                            className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
+                            placeholder=""
+                        />
+                        <label className="font-normal text-gray-500 text-xl mt-2"> Event Time</label>
+                        <input
+                            type="time"
+                            value={EndTime} // Use EndTime state variable for value
+                            onChange={(e) => setEventEndTime(e.target.value)} // Use setEventEndTime for updating EndTime
+                            className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
+                            placeholder=""
+                        />
+
+
                     </div>
                 </div>
             </div>
