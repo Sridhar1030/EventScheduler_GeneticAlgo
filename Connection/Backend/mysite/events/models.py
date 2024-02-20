@@ -1,14 +1,16 @@
-from django.db import models; from django.utils import timezone; from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-
-
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class Event(models.Model): 
     name = models.CharField(max_length=255)
     date = models.DateField(default=timezone.now)  # First date field
     another_date = models.DateField(default=timezone.now)  # Second date field
-
+    time = models.DateTimeField(default=timezone.now)  # Change to DateTimeField to store both date and time
+    endtime = models.DateTimeField(default=timezone.now)  # Change to DateTimeField to store both date and time
+    
     class Meta:
-        managed = True  # Ensure managed is set to True
+        managed = True
         app_label = 'events'
 
     def __str__(self):
@@ -19,7 +21,7 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError('The Email field must be set')
         if not username:
-            username = 'default_username'  # Set a default username if not provided
+            username = 'default_username'
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
@@ -30,7 +32,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         if not username:
-            username = 'default_superuser'  # Set a default username if not provided
+            username = 'default_superuser'
         return self.create_user(email, username, password, **extra_fields)
 
 
@@ -52,7 +54,8 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
 
 class RegisteredEvent(models.Model):
     username = models.CharField(max_length=150)
-    event_name = models.CharField(max_length=255)  # Change to CharField or appropriate field type
+    event_name = models.CharField(max_length=255)
+    time = models.DateTimeField(auto_now_add=True)  # Change to DateTimeField to store the time of registration
 
     def __str__(self):
-        return f"{self.user.email} - {self.event.name}"
+        return f"{self.username} - {self.event_name}"

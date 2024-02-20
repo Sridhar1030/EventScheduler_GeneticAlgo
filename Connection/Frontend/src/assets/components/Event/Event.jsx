@@ -12,7 +12,8 @@ function Events() {
             .then(response => {
                 setEvents(response.data);
             })
-            .catch(error => {
+            .catch(error =>
+                {
                 console.error('Error fetching events:', error);
             });
     }, []); // Empty dependency array ensures the effect runs only once on component mount
@@ -31,14 +32,29 @@ function Events() {
                 {events.map(event => (
                     <Link to={`/${event.name}`} key={event.id}>
                         <div className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
-                            <div>
-                                <h2>Event Name: {event.name}</h2>
+                            <div className='flex gap-3'>
+                                <div><h2>Event Name : </h2></div>
+                                <div className='font-medium underline capitalize'>{event.name}</div>
                             </div>
                             <div>
                                 <strong>Start Date:</strong> {event.date}
                             </div>
                             <div>
                                 <strong>End Date:</strong> {event.another_date}
+                            </div>
+                            {/* <div>
+                                <strong>Time</strong> {event.Time}
+                            </div>
+                            <div>
+                                <strong>End Time</strong> {event.EndTime}
+                            </div> */}
+                            <div >
+                                    <div className='font-medium underline'>
+                                    EVENT TIME 
+                                    </div>
+                                <div className='font-semibold'>
+                                    {event.Time} to {event.EndTime}
+                                </div>
                             </div>
                         </div>
                     </Link>
