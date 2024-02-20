@@ -12,7 +12,8 @@ function Events() {
             .then(response => {
                 setEvents(response.data);
             })
-            .catch(error => {
+            .catch(error =>
+                {
                 console.error('Error fetching events:', error);
             });
     }, []); // Empty dependency array ensures the effect runs only once on component mount
