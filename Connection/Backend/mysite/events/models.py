@@ -16,6 +16,18 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+
+class SubEvent(models.Model):
+    name = models.CharField(max_length=255)
+    event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='subevents')
+
+    def __str__(self):
+        return self.name
+
+
+
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username=None, password=None, **extra_fields):
         if not email:
@@ -54,8 +66,9 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
 
 class RegisteredEvent(models.Model):
     username = models.CharField(max_length=150)
+    sub_event_name = models.CharField(max_length=255)  # New field for sub-event name
     event_name = models.CharField(max_length=255)
-    time = models.DateTimeField(auto_now_add=True)  # Change to DateTimeField to store the time of registration
+    time = models.DateTimeField(default=timezone.now)  # Add the time field
 
     def __str__(self):
-        return f"{self.username} - {self.event_name}"
+        return f"{self.username} - {self.event_name} - {self.sub_event_name}"

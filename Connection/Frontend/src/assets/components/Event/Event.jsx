@@ -12,8 +12,7 @@ function Events() {
             .then(response => {
                 setEvents(response.data);
             })
-            .catch(error =>
-                {
+            .catch(error => {
                 console.error('Error fetching events:', error);
             });
     }, []); // Empty dependency array ensures the effect runs only once on component mount
@@ -42,16 +41,21 @@ function Events() {
                             <div>
                                 <strong>End Date:</strong> {event.another_date}
                             </div>
-                            {/* <div>
-                                <strong>Time</strong> {event.Time}
-                            </div>
+                            {/* Display sub-events if available */}
+                            {event.sub_events && event.sub_events.length > 0 && (
+                                <div>
+                                    <strong>Sub Events:</strong>
+                                    <ul>
+                                        {event.sub_events.map(subEvent => (
+                                            <li key={subEvent}>{subEvent}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                             <div>
-                                <strong>End Time</strong> {event.EndTime}
-                            </div> */}
-                            <div >
-                                    <div className='font-medium underline'>
+                                <div className='font-medium underline'>
                                     EVENT TIME 
-                                    </div>
+                                </div>
                                 <div className='font-semibold'>
                                     {event.Time} to {event.EndTime}
                                 </div>

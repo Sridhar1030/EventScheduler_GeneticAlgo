@@ -24,6 +24,7 @@ const YourEvents = () => {
                     <>
                     <h2 className='mt-5 ml-7'>Username: {event.username}</h2>
                     <h2 className='ml-7'>Eventname: {event.event_name}</h2>
+                    <h2 className='ml-7'>Sub Eventname: {event.sub_event_name}</h2>
                     </>
             </div>
                 ))}
