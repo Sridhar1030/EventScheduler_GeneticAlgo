@@ -1,0 +1,1 @@
+1. event form me sirf first event name jaa raha hai  from event.jsx dynamically update nhi ho raha 
