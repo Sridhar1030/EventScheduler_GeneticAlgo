@@ -33,7 +33,8 @@ def create_event(request):
             event_time_str = data.get('Time', '')  # Get the Time from the request data
             event_endtime_str = data.get('EndTime', '')  # Get the EndTime from the request data
             sub_events = data.get('subEvents', [])  # Get the sub-events from the request data
-
+            
+            
             if event_name and event_date and end_event_date and event_time_str and event_endtime_str:
                 # Parse the time strings and convert them into datetime objects
                 event_time = datetime.strptime(event_time_str, '%H:%M')

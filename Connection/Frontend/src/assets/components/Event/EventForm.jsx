@@ -29,8 +29,10 @@ function EventForm() {
         if (eventIndex !== null && eventName !== '') {
             axios.get('http://localhost:8000/api/get-events/')
                 .then(response => {
-                    if (response.data && response.data.length > eventIndex) {
-                        const selectedEventName = response.data[eventIndex].name;
+                    // Reverse the order of events before processing
+                    const reversedEvents = response.data.reverse();
+                    if (reversedEvents && reversedEvents.length > eventIndex) {
+                        const selectedEventName = reversedEvents[eventIndex].name;
                         setFormData(prevFormData => ({
                             ...prevFormData,
                             eventName: selectedEventName
@@ -51,6 +53,7 @@ function EventForm() {
                 });
         }
     }, [eventIndex]);
+    
 
     
     const handleChange = (e) => {

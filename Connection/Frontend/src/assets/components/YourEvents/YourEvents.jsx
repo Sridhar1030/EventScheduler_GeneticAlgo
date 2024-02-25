@@ -8,7 +8,7 @@ const YourEvents = () => {
         // Fetch registered events from Django backend
         axios.get('http://localhost:8000/api/get-registered-events/')
             .then(response => {
-                setRegisteredEvents(response.data);
+                setRegisteredEvents(response.data.reverse());
             })
             .catch(error => {
                 console.error('Error fetching registered events:', error);
