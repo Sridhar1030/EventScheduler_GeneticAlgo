@@ -9,29 +9,36 @@ const Create = () => {
     const [EndEventDate, setEndEventDate] = useState('');
     const [Time, setEventTime] = useState('');
     const [EndTime, setEventEndTime] = useState('');
+    const [subEvents, setSubEvents] = useState([]); // State to store multiple sub-events
+    const [customSubEvent, setCustomSubEvent] = useState('');
+
 
     const handleCreateEvent = async () => {
-    try {
-        if (eventName.trim() !== '' && eventDate.trim() !== '' && EndEventDate.trim() !== '') {
-            // Send event name, event date, start time, and end time to Django backend using POST
-            await axios.post('http://localhost:8000/api/create-event/', { eventName, eventDate, EndEventDate, Time, EndTime });
-
-            // Clear input fields after successful event creation
-            setEventName('');
-            setEventDate('');
-            setEndEventDate('');
-            setEventTime('');
-            setEventEndTime(''); // Reset EndTime to clear input field
-
-            alert('Event created successfully!');
-        } else {
-            alert('Please enter a valid event name, start date, and end date.');
+        try {
+            if (eventName.trim() !== '' && eventDate.trim() !== '' && EndEventDate.trim() !== '') {
+                await axios.post('http://localhost:8000/api/create-event/', {
+                    eventName,
+                    eventDate,
+                    EndEventDate,
+                    Time,
+                    EndTime,
+                    subEvents: [...subEvents, customSubEvent] // Include only customSubEvent
+                });
+                alert('Event created successfully!');
+            } else {
+                alert('Please enter a valid event name, start date, and end date.');
+            }
+        } catch (error) {
+            console.error('Error creating event:', error);
         }
-    } catch (error) {
-        console.error('Error creating event:', error);
-    }
-};
-
+    };
+    
+    const addSubEvent = () => {
+        if (customSubEvent.trim() !== '') {
+            setSubEvents(prevState => [...prevState, customSubEvent]); // Add new sub-event to the array
+            setCustomSubEvent(''); // Clear input field after adding sub-event
+        }
+    };
 
     return (
         <>
@@ -83,7 +90,15 @@ const Create = () => {
                             className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                             placeholder=""
                         />
-
+                        <div>
+                            <input
+                                type="text"
+                                value={customSubEvent}
+                                onChange={(e) => setCustomSubEvent(e.target.value)}
+                                placeholder="Enter Sub Event Name"
+                            />
+                            <button onClick={addSubEvent}>Add Sub Event</button>
+                        </div>
 
                     </div>
                 </div>
@@ -106,4 +121,3 @@ const Create = () => {
 };
 
 export default Create;
-
