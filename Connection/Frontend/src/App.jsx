@@ -9,6 +9,7 @@ import Delete from './assets/components/Delete/Delete';
 import EventForm from './assets/components/Event/EventForm';
 import YourEvents from './assets/components/YourEvents/YourEvents';
 import Login from './assets/components/Registration/Login';
+import Scheduler from './assets/components/Scheduler/Scheduler';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -33,7 +34,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create" element={<Create />} />
           <Route path="/event" element={<Event />} />
-
+          <Route path="/schedule" element={<Scheduler />} />
           {/* Dynamically render routes for each event */}
           {events.map(event => (
             <Route 
