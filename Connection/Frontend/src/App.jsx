@@ -11,6 +11,7 @@ import Home from './assets/components/Home/Home';
 import Delete from './assets/components/Delete/Delete';
 import EventForm from './assets/components/Event/EventForm';
 import YourEvents from './assets/components/YourEvents/YourEvents';
+import Login from './assets/components/Registration/Login';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -31,6 +32,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/create" element={<Create />} />
           <Route path="/event" element={<Event />} />
         {events.map(event => (
