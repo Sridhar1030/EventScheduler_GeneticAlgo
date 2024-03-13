@@ -10,6 +10,7 @@ import EventForm from './assets/components/Event/EventForm';
 import YourEvents from './assets/components/YourEvents/YourEvents';
 import Login from './assets/components/Registration/Login';
 import Scheduler from './assets/components/Scheduler/Scheduler';
+import Genetic from './assets/components/Genetic/Genetic';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -41,6 +42,13 @@ function App() {
               key={event.id} 
               path={`/${event.name}`} 
               element={<EventForm eventName={event.name} />} 
+            />
+          ))}
+          {events.map(event => (
+            <Route 
+              key={event.id} 
+              path={`/genetic/${event.name}`} 
+              element={<Genetic eventName={event.name} />} 
             />
           ))}
           {/* <Route path='/event-form' element={<EventForm/>}/> */}
