@@ -32,7 +32,7 @@ const Scheduler = () => {
                         key={event.id}
                     >
                     <div className=''>
-                        <div className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
+                        <div className='cursor-pointer border-2 border-blue-700 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
                                     <div className='flex gap-3'>
                                         <div><h2>Event Name : </h2></div>
                                         <div className='font-medium underline capitalize'>{event.name}</div>
