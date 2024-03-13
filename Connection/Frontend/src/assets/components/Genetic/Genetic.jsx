@@ -64,15 +64,15 @@ const Genetic = () => {
             <div className="mt-8 flex flex-col justify-center mx-auto text-center w-96 h-96 mb-10 ">
     <h1>Algorithm implementation</h1>
     <h2 className='font-semibold'>Subevents Table:</h2>
-    <table className="border-collapse border border-gray-400 mt-2">
+    <table className="border-collapse border border-gray-400 mt-2 ">
         <thead>
             <tr>
-                <th className="border border-gray-400 p-2">Subevent</th>
+                <th className="border border-gray-400 p-2 ">Subevent</th>
             </tr>
         </thead>
         <tbody>
-            {subEvents.slice(0, subEvents.length - 1).map((subEvent, index) => (
-                <tr key={index} className="hover:bg-gray-200">
+            {subEvents.slice(0, subEvents.length).map((subEvent, index) => (
+                <tr key={index} className="hover:bg-gray-300 hover:text-lg transitin duration-150">
                     <td className="border border-gray-400 p-2">{subEvent}</td>
                 </tr>
             ))}
