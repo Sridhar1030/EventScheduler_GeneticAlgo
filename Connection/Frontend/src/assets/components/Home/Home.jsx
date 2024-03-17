@@ -11,7 +11,8 @@ const Home = () => {
 
                 <div className="container mx-auto py-20 ">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 ml-4">
-                        <div className="flex flex-col justify-center">
+                        <div className="flex 3
+                        flex-col justify-center">
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">
                                 Welcome to Our Website
                             </h1>
@@ -23,16 +24,16 @@ const Home = () => {
                             <div className='mt-10 ml-10 gap-10 mx-auto '>
                                 <h1 className='text-xl'>Create a Event </h1>
                                 <Link to="/create"> 
-                                <button className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Create
-                                </button>
+                                    <button className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-white">
+                                        Create
+                                    </button>
                                 </Link>
                                 <h1 className=' mt-10 text-xl'>See you events </h1>
                                 <Link to ="/enrolled">
-                                    <button className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Your events
-                                </button>
-                                    </Link>
+                                    <button className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-white">
+                                        Your events
+                                    </button>
+                                </Link>
                             </div>
 
 
@@ -62,4 +63,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Home;    
