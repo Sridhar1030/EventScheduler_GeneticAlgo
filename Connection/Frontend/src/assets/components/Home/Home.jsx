@@ -39,11 +39,11 @@ const Home = () => {
 
                         </div>
                         <div>
-                            <img
+                            <img 
                                 src={gif}
                                 alt="Homepage"
 
-                                className="rounded- ml-36 px-10 "
+                                className="w-96 right-0 absolute "
                             />
                             <div>
 
