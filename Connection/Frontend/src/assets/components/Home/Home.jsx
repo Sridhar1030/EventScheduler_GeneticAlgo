@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import gif from '../../Gif/2.gif'
+import gif from '../../Gif/4.gif'
 import svg from '../../Gif/SVG.svg'
 import { Link } from 'react-router-dom';
 const Home = () => {
@@ -43,7 +43,7 @@ const Home = () => {
                                 src={gif}
                                 alt="Homepage"
 
-                                className="w-96 right-0 absolute "
+                                className="size-96 right-0 absolute "
                             />
                             <div>
 

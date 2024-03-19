@@ -1,23 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import image from '../../Images/images-removebg-preview.png'
 
 function Navbar() {
     return (
-        <nav className="sticky z-50 top-0 bg-slate-500 text-xl">
+        <nav className="sticky z-50 top-0 bg-slate-500 text-xl text-black">
             <div className="flex justify-start space-x-11 h-20">
                 <div className="flex justify-center align-middle">
                     <button>
-                        <Link to="/" className="text-2xl flex justify-center align-middle">
-                            <img className='size-10' src="https://cdn-icons-png.flaticon.com/512/9752/9752709.png" alt="" />
+                        <Link to="/" className="text-2xl flex justify-center align-middle items-center">
+                            <img className='flex size-11  ' src={image} alt="" />
+                            <p className='hover:text-white'>
+
                             Sports Scheduler
+                            </p>
                         </Link>
                     </button>
 
                     <div className='flex text-lg ml-14 space-x-10'>
-                        <button><Link to="/create">Create Event</Link></button>
-                        <button><Link to="/event">See Events</Link></button>
-                        <button><Link to="/enrolled">Your events</Link></button>
-                        <button><Link to="/schedule">Event Schedule</Link></button>
+                        <button><Link to="/create" className="hover:text-xl hover:text-white">Create Event</Link></button>
+                        <button><Link to="/event" className="hover:text-xl hover:text-white">See Events</Link></button>
+                        <button><Link to="/enrolled" className="hover:text-xl hover:text-white">Your events</Link></button>
+                        <button><Link to="/schedule" className="hover:text-xl hover:text-white">Event Schedule</Link></button>
 
                     </div>
                 </div>

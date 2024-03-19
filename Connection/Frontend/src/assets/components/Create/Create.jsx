@@ -12,6 +12,7 @@ const Create = () => {
     const [subEvents, setSubEvents] = useState([]); // State to store multiple sub-events
     const [customSubEvent, setCustomSubEvent] = useState('');
 
+
     const handleCreateEvent = async () => {
         try {
             if (eventName.trim() !== '' && eventDate.trim() !== '' && EndEventDate.trim() !== '') {
