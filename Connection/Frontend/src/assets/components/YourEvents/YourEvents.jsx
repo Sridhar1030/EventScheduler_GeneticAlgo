@@ -17,7 +17,7 @@ const YourEvents = () => {
     }, []); // Empty dependency array ensures the effect runs only once on component mount
 
     return (
-        <div className='bg-blue-950 h-screen relative'> {/* Set position to relative */}
+        <div className='bg-gray-900 h-screen relative'> {/* Set position to relative */}
             <Navbar />
             {registeredEvents.map(event => (
                 <div 
@@ -35,8 +35,8 @@ const YourEvents = () => {
                 >
                     <div className='font-bold '>
                         <h2 className='pt-4 ml-7'>Username: {event.username}</h2> {/* Adjusted margin-top */}
-                        <h2 className='ml-7'>Eventname: {event.event_name}</h2>
-                        <h2 className='ml-7'>Sub Eventname: {event.sub_event_name}</h2>
+                        <h2 className='ml-7'>Eventname: {event.eventName}</h2>
+                        <h2 className='ml-7'>Sub Eventname: {event.subEventName}</h2>
                     </div>
                     
                 </div>

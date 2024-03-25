@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import time
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
@@ -19,12 +20,11 @@ class Event(models.Model):
 
 class SubEvent(models.Model):
     name = models.CharField(max_length=255)
+    duration = models.IntegerField(default=0)  # Add duration field
     event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='subevents')
 
     def __str__(self):
         return self.name
-
-
 
 
 

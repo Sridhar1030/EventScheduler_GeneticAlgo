@@ -2,27 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 
-
-
-
-//Location.state gives the Event Index from Event.jsx to EventForm.jsx
-
-
-
-
 function EventForm() {
     const location = useLocation();
     const eventIndex = location.state ? location.state.eventIndex : '';
     const eventName = location.state ? location.state.eventName : '';
-    console.log("location state " , location.state)
 
     const [formData, setFormData] = useState({
         username: '', // Add username state
         eventName: '', // Add eventName state
         subEventName: '', // Add subEventName state
     });
-
-
 
     const [subEvents, setSubEvents] = useState([]); // State to store sub-events
     useEffect(() => {
@@ -53,9 +42,7 @@ function EventForm() {
                 });
         }
     }, [eventIndex]);
-    
 
-    
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -97,7 +84,7 @@ function EventForm() {
                     <select id="subEventName" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={handleChange}>
                         <option value="">Select a sub-event</option>
                         {subEvents.map((subEvent, index) => (
-                            <option key={index} value={subEvent}>{subEvent}</option>
+                            <option key={index} value={subEvent.name}>{subEvent.name}</option>
                         ))}
                     </select>
                 </div>

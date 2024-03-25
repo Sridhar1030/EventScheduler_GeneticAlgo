@@ -9,9 +9,9 @@ const Create = () => {
     const [EndEventDate, setEndEventDate] = useState('');
     const [Time, setEventTime] = useState('');
     const [EndTime, setEventEndTime] = useState('');
-    const [subEvents, setSubEvents] = useState([]); // State to store multiple sub-events
+    const [subEvents, setSubEvents] = useState([]);
     const [customSubEvent, setCustomSubEvent] = useState('');
-
+    const [subEventDuration, setSubEventDuration] = useState('');
 
     const handleCreateEvent = async () => {
         try {
@@ -22,7 +22,10 @@ const Create = () => {
                     EndEventDate,
                     Time,
                     EndTime,
-                    subEvents: [...subEvents, customSubEvent] // Include only customSubEvent
+                    subEvents: subEvents.map(subEvent => ({
+                        name: subEvent.name,
+                        duration: subEvent.duration
+                    }))
                 });
                 alert('Event created successfully!');
             } else {
@@ -34,9 +37,16 @@ const Create = () => {
     };
 
     const addSubEvent = () => {
-        if (customSubEvent.trim() !== '') {
-            setSubEvents(prevState => [...prevState, customSubEvent]); // Add new sub-event to the array
-            setCustomSubEvent(''); // Clear input field after adding sub-event
+        if (customSubEvent.trim() !== '' && subEventDuration.trim() !== '') {
+            setSubEvents(prevState => [
+                ...prevState,
+                {
+                    name: customSubEvent,
+                    duration: subEventDuration
+                }
+            ]);
+            setCustomSubEvent('');
+            setSubEventDuration('');
         }
     };
 
@@ -45,6 +55,7 @@ const Create = () => {
             <Navbar />
             <div className='flex justify-center align-middle items-center '>
                 <div className="w-72 mt-10  ">
+                    {/* Event Name */}
                     <div className="relative w-full min-w-[200px] h- ">
                         <input
                             type="text"
@@ -55,6 +66,8 @@ const Create = () => {
                         />
                         <label className="block  text-gray-500 mb-1 text-xl">Event Name</label>
                     </div>
+
+                    {/* Event Start Date */}
                     <div className='mtgap-7 mt-1'>
                         <input
                             type="date"
@@ -65,6 +78,8 @@ const Create = () => {
                         />
                         <label className="font-normal text-gray-500 text-xl mt-2">Event Start Date</label>
                     </div>
+
+                    {/* Event End Date */}
                     <div className='gap-7 mt-10'>
                         <input
                             type="date"
@@ -75,6 +90,7 @@ const Create = () => {
                         />
                         <label className="font-normal text-gray-500 text-xl mt-2"> Event End Date</label>
 
+                        {/* Event Start Time */}
                         <input
                             type="time"
                             value={Time}
@@ -83,6 +99,8 @@ const Create = () => {
                             placeholder=""
                         />
                         <label className="font-normal text-gray-500 text-xl mt-2"> Event Start Time</label>
+
+                        {/* Event End Time */}
                         <input
                             type="time"
                             value={EndTime} // Use EndTime state variable for value
@@ -90,23 +108,47 @@ const Create = () => {
                             className="mt-10 peer w-full h-full bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                             placeholder=""
                         />
-                        <label className="font-normal text-gray-500 text-xl mt-2"> Event Start Time</label>
+                        <label className="font-normal text-gray-500 text-xl mt-2"> Event End Time</label>
+
+                        {/* Sub Event Name */}
                         <div className='mt-10 flex gap-3 justify-center items-center'>
-                        <input
-                            type="text"
-                            value={customSubEvent}
-                            onChange={(e) => setCustomSubEvent(e.target.value)}
-                            placeholder="Enter Sub Event Name"
-                            className=" h-14 peer w-full  bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 focus:text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
-                        />
-                        <button  className=' w-32 align-middle flex h-10 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 '  onClick={addSubEvent}>Add Sub Event</button>
+                            <input
+                                type="text"
+                                value={customSubEvent}
+                                onChange={(e) => setCustomSubEvent(e.target.value)}
+                                placeholder="Enter Sub Event Name"
+                                className=" h-14 peer w-full  bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 focus:text-sm px-3 py-2.5 rounded-[7px] 
+                                - blue-gray-200 focus:border-gray-900"
+                            />
+                            <label className="block  text-gray-500 mb-1 text-xl">Event Name</label>
                         </div>
 
-                            
+                        {/* Sub Event Duration */}
+                        <div className='mt-10'>
+                            <input
+                                type="text"
+                                value={subEventDuration}
+                                onChange={(e) => setSubEventDuration(e.target.value)}
+                                placeholder="Enter Sub Event Duration"
+                                className="peer w-full h-full bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
+                            />
+                            <label className="font-normal text-gray-500 text-xl mt-2"> Sub Event Duration</label>
 
+                            {/* Add Sub Event Button */}
+                            <div className='mt-10 flex gap-3 justify-center items-center'>
+                                <button
+                                    className='w-32 align-middle flex h-10 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                                    onClick={addSubEvent}
+                                >
+                                    Add Sub Event
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {/* Create Event Button */}
             <div className='mt-10 ml-10 flex gap-4 flex-col w-32 '>
                 <button
                     className="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -114,11 +156,12 @@ const Create = () => {
                 >
                     Create Event
                 </button>
-                <button className="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
 
-                <Link to="/event" >
-                    View Events
-                </Link>
+                {/* View Events Button */}
+                <button className="px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    <Link to="/event" >
+                        View Events
+                    </Link>
                 </button>
             </div>
         </div>
@@ -127,3 +170,4 @@ const Create = () => {
 };
 
 export default Create;
+
