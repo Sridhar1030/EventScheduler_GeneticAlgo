@@ -1,10 +1,10 @@
+from .algorithms import genetic_algorithm, load_events_from_json
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Event, RegisteredEvent, SubEvent
 import json
 from django.utils import timezone
 from datetime import datetime
-
 @csrf_exempt
 def clear_database(request):
     try:
@@ -24,28 +24,28 @@ def create_event(request):
             body_unicode = request.body.decode('utf-8').strip()
             if body_unicode:
                 data = json.loads(body_unicode)
-                print("Received data:", data)
+                sub_events = data.get('subEvents', [])  # Extract sub_events from the data
                 event_name = data.get('eventName', '')
                 event_date = data.get('eventDate', '')
-                end_event_date = data.get('EndEventDate', '')
+                end_event_date = data.get('endEventDate', '')
                 event_time_str = data.get('Time', '')
                 event_endtime_str = data.get('EndTime', '')
-                sub_events = data.get('subEvents', [])
-                print("Extracted event name:", event_name)
-                print("Extracted event date:", event_date)
                 if event_name and event_date and end_event_date and event_time_str and event_endtime_str and sub_events:
                     event_time = datetime.strptime(event_time_str, '%H:%M')
                     event_endtime = datetime.strptime(event_endtime_str, '%H:%M')
 
+                    # Create the main event instance
                     main_event = Event.objects.create(name=event_name, date=event_date, another_date=end_event_date,
                                                     time=event_time, endtime=event_endtime)
 
+                    # Create sub events
                     for sub_event in sub_events:
-                        if isinstance(sub_event, dict):  # Check if sub_event is a dictionary
+                        if isinstance(sub_event, dict):
                             sub_event_name = sub_event.get('name', '')
                             sub_event_duration = sub_event.get('duration', '')
-                            if sub_event_name and sub_event_duration:
-                                SubEvent.objects.create(name=sub_event_name, event=main_event, duration=sub_event_duration)
+                            space_number = sub_event.get('spaceNumber', '')  # Add spaceNumber field to subevent data
+                            if sub_event_name and sub_event_duration and space_number:  # Check if space number is provided
+                                SubEvent.objects.create(name=sub_event_name, event=main_event, duration=sub_event_duration, space_number=space_number)
                             else:
                                 return JsonResponse({'error': 'Invalid sub-event data'}, status=400)
                         else:
@@ -63,6 +63,7 @@ def create_event(request):
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
+
 @csrf_exempt    
 def get_events(request):
     events = Event.objects.all()
@@ -76,7 +77,7 @@ def get_events(request):
             'endEventDate': event.another_date.strftime('%Y-%m-%d'),
             'startTime': event.time.strftime('%H:%M'),
             'end_Time': event.endtime.strftime('%H:%M'),
-            'subEvents': [{'name': sub_event.name, 'duration': sub_event.duration} for sub_event in event.subevents.all()]
+            'subEvents': [{'name': sub_event.name, 'duration': sub_event.duration, 'spaceNumber': sub_event.space_number} for sub_event in event.subevents.all()]
         }
         event_list.append(event_data)
 
@@ -104,20 +105,68 @@ def register_event(request):
             event_name = data.get('eventName', '')
 
             if username and sub_event_name and event_name:
-                RegisteredEvent.objects.create(username=username, sub_event_name=sub_event_name, event_name=event_name, time=timezone.now())
+                # Retrieve the associated subevent
+                sub_event = SubEvent.objects.get(name=sub_event_name, event__name=event_name)
+                space_number = sub_event.space_number  # Retrieve the slot number
+                RegisteredEvent.objects.create(username=username, sub_event_name=sub_event_name, event_name=event_name, space_number=space_number, time=timezone.now())  # Save space number along with other details
                 return JsonResponse({'message': 'Event registered successfully'}, status=201)
             else:
                 return JsonResponse({'error': 'Invalid data. Username, event name, and sub event name are required.'}, status=400)
+        except SubEvent.DoesNotExist:
+            return JsonResponse({'error': 'Subevent does not exist'}, status=400)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 @csrf_exempt
-def get_registered_events(request):
+def get_registered_events(request):    
     try:
         registered_events = RegisteredEvent.objects.all()
-        event_list = [{'id': event.id, 'username': event.username, 'subEventName': event.sub_event_name, 'eventName': event.event_name} for event in registered_events]
+        event_list = []
+        for event in registered_events:
+            sub_event = SubEvent.objects.get(name=event.sub_event_name, event__name=event.event_name)
+            event_data = {
+                'id': event.id,
+                'username': event.username,
+                'subEventName': event.sub_event_name,
+                'eventName': event.event_name,
+                'spaceNumber': sub_event.space_number
+            }
+            event_list.append(event_data)
         return JsonResponse(event_list, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def run_genetic_algorithm(request):
+    if request.method == 'POST':
+        try:
+            # Load events from JSON
+            with open("./events/events.json", "r") as f:
+                json_data = json.load(f)
+            events = load_events_from_json(json_data)
+
+            # Extract population size and number of generations
+            population_size = int(request.POST.get('population_size', 100))
+            num_generations = int(request.POST.get('num_generations', 100))
+
+            # Run the genetic algorithm
+            best_schedule = genetic_algorithm(events, population_size, num_generations)
+
+            # Return the result
+            if best_schedule:
+                result = {
+                    "best_schedule": {
+                        "events": [event.__dict__ for event in best_schedule.events],
+                        "fitness": best_schedule.fitness
+                    }
+                }
+                return JsonResponse(result, status=200)
+            else:
+                return JsonResponse({"error": "No best schedule found."}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Method not allowed!!'}, status=405)

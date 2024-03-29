@@ -79,6 +79,7 @@ const Genetic = () => {
                 }
                 const winner = contestants.reduce((max, current) => fitness(current) < fitness(max) ? current : max);
                 selected.push(winner);
+                // console.log("winner is " , winner);
             }
             return selected;
         }
@@ -98,6 +99,7 @@ const Genetic = () => {
                 let idx2 = Math.floor(Math.random() * schedule.length);
                 while (idx2 === idx1) idx2 = Math.floor(Math.random() * schedule.length);
                 [schedule[idx1], schedule[idx2]] = [schedule[idx2], schedule[idx1]];
+                console.log("mutation is " , idx1);
             }
             return schedule;
         }

@@ -1,0 +1,27 @@
+{
+    "events_data": [
+        {
+            "name": "Event 1",
+            "duration": 60,
+            "spaceNumber": 1,
+            "event_date": "2024-04-01",
+            "end_event_date": "2024-04-03"
+        },
+        {
+            "name": "Event 2",
+            "duration": 45,
+            "spaceNumber": 5,
+            "event_date": "2024-04-01",
+            "end_event_date": "2024-04-03"
+        },
+        {
+            "name": "Event 3",
+            "duration": 30,
+            "spaceNumber": 5,
+            "event_date": "2024-04-01",
+            "end_event_date": "2024-04-03"
+        }
+    ],
+    "population_size": 10,
+    "num_generations": 10
+}

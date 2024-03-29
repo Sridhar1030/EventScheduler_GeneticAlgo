@@ -22,6 +22,7 @@ class SubEvent(models.Model):
     name = models.CharField(max_length=255)
     duration = models.IntegerField(default=0)  # Add duration field
     event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='subevents')
+    space_number = models.PositiveIntegerField(default=0)  # Add space_number field
 
     def __str__(self):
         return self.name

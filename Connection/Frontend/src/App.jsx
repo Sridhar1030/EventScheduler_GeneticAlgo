@@ -55,7 +55,7 @@ function App() {
           {/* Define routes for other components */}
           <Route path="/enrolled" element={<YourEvents />} />
           <Route path="/DELETE" element={<Delete />} />
-
+          
         </Routes>
       </Router>
     </>

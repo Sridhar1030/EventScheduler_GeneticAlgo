@@ -6,26 +6,24 @@ import Navbar from '../Navbar/Navbar';
 const Create = () => {
     const [eventName, setEventName] = useState('');
     const [eventDate, setEventDate] = useState('');
-    const [EndEventDate, setEndEventDate] = useState('');
+    const [endEventDate, setEndEventDate] = useState('');
     const [Time, setEventTime] = useState('');
     const [EndTime, setEventEndTime] = useState('');
     const [subEvents, setSubEvents] = useState([]);
     const [customSubEvent, setCustomSubEvent] = useState('');
     const [subEventDuration, setSubEventDuration] = useState('');
+    const [spaceNumber, setSpaceNumber] = useState('');
 
     const handleCreateEvent = async () => {
         try {
-            if (eventName.trim() !== '' && eventDate.trim() !== '' && EndEventDate.trim() !== '') {
+            if (eventName.trim() !== '' && eventDate.trim() !== '' && endEventDate.trim() !== '') {
                 await axios.post('http://localhost:8000/api/create-event/', {
                     eventName,
                     eventDate,
-                    EndEventDate,
+                    endEventDate,
                     Time,
                     EndTime,
-                    subEvents: subEvents.map(subEvent => ({
-                        name: subEvent.name,
-                        duration: subEvent.duration
-                    }))
+                    subEvents
                 });
                 alert('Event created successfully!');
             } else {
@@ -35,20 +33,31 @@ const Create = () => {
             console.error('Error creating event:', error);
         }
     };
+    
 
     const addSubEvent = () => {
-        if (customSubEvent.trim() !== '' && subEventDuration.trim() !== '') {
-            setSubEvents(prevState => [
-                ...prevState,
-                {
-                    name: customSubEvent,
-                    duration: subEventDuration
-                }
-            ]);
-            setCustomSubEvent('');
-            setSubEventDuration('');
+        if (customSubEvent.trim() !== '' && subEventDuration.trim() !== '' && spaceNumber.trim() !== '') { // Check if space number is provided
+            const spaceNum = parseInt(spaceNumber, 10); // Parse spaceNumber to integer
+            if (!isNaN(spaceNum)) { // Check if parsing was successful
+                setSubEvents(prevState => [
+                    ...prevState,
+                    {
+                        name: customSubEvent,
+                        duration: parseInt(subEventDuration),
+                        spaceNumber: spaceNum // Store space number as integer
+                    }
+                ]);
+                setCustomSubEvent('');
+                setSubEventDuration('');
+                setSpaceNumber('');
+            } else {
+                alert('Please enter a valid space number.'); // Alert if space number is not a valid integer
+            }
+        } else {
+            alert('Please enter a valid sub event name, duration, and space number.');
         }
     };
+
 
     return (
         <div className='bg-gray-900 h-full bottom-0'>
@@ -83,7 +92,7 @@ const Create = () => {
                     <div className='gap-7 mt-10'>
                         <input
                             type="date"
-                            value={EndEventDate}
+                            value={endEventDate}
                             onChange={(e) => setEndEventDate(e.target.value)}
                             className=" peer w-full h-full bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                             placeholder=""
@@ -103,8 +112,8 @@ const Create = () => {
                         {/* Event End Time */}
                         <input
                             type="time"
-                            value={EndTime} // Use EndTime state variable for value
-                            onChange={(e) => setEventEndTime(e.target.value)} // Use setEventEndTime for updating EndTime
+                            value={EndTime} // Use endTime state variable for value
+                            onChange={(e) => setEventEndTime(e.target.value)} // Use setEventEndTime for updating endTime
                             className="mt-10 peer w-full h-full bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                             placeholder=""
                         />
@@ -122,6 +131,17 @@ const Create = () => {
                             />
                             <label className="block  text-gray-500 mb-1 text-xl">Event Name</label>
                         </div>
+                        {/* Space Number */}
+                        <input
+                            type="number" // Change input type to number for spaceNumber
+                            value={spaceNumber}
+                            onChange={(e) => setSpaceNumber(e.target.value)}
+                            placeholder="Enter Space Number"
+                            className="h-14 peer w-full  bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 focus:text-sm px-3 py-2.5 rounded-[7px] 
+    - blue-gray-200 focus:border-gray-900"
+                        />
+                        <label className="block  text-gray-500 mb-1 text-xl">Space Number</label>
+
 
                         {/* Sub Event Duration */}
                         <div className='mt-10'>
@@ -170,4 +190,3 @@ const Create = () => {
 };
 
 export default Create;
-

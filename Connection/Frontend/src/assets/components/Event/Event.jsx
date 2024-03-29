@@ -35,21 +35,19 @@ function Events() {
     // Render the component
     return (
         <>
-            <Navbar />
+            {/* Navbar component... */}
             <h1 className='border-2 border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10 bg-gray'>LIVE EVENTS</h1>
             <div className='mt-5 ml-10'>
                 {/* Map through the list of events and render each event */}
                 {events.map((event, index) => {
-                    console.log(event); // Move the console.log statement here
                     return (
                         <Link
                             to={`/${event.name}`}
                             state={{ eventIndex: index }}
                             key={event.id}
-
                         >
                             <div>
-                                <button className='flex' onClick={() => console.log("index is " + index)}>
+                                <button className='flex'>
                                     <div className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
                                         <div className='flex gap-3'>
                                             <div><h2>Event Name : </h2></div>
@@ -72,6 +70,9 @@ function Events() {
                                                     {event.subEvents.map(subEvent => (
                                                         <li key={subEvent.name}>
                                                             {subEvent.name} - {subEvent.duration}
+                                                            {subEvent.spaceNumber && (
+                                                                <span>, Slot: {subEvent.spaceNumber}</span>
+                                                            )}
                                                         </li>
                                                     ))}
                                                 </ul>
@@ -82,7 +83,7 @@ function Events() {
                                                 EVENT TIME
                                             </div>
                                             <div className='font-semibold'>
-                                                {event.startTime} to {event.endTime}
+                                                {event.startTime} to {event.end_Time}
                                             </div>
                                         </div>
                                     </div>
