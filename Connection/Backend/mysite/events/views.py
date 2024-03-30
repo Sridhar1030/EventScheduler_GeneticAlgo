@@ -88,12 +88,13 @@ def get_sub_events(request, event_name):
     try:
         event = Event.objects.get(name=event_name)
         sub_events = SubEvent.objects.filter(event=event)
-        sub_event_list = [{'name': sub_event.name, 'duration': sub_event.duration} for sub_event in sub_events]
+        sub_event_list = [{'name': sub_event.name, 'duration': sub_event.duration, 'spaceNumber': sub_event.space_number} for sub_event in sub_events]
         return JsonResponse(sub_event_list, safe=False)
     except Event.DoesNotExist:
         return JsonResponse({'error': 'Event does not exist'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 
 @csrf_exempt
 def register_event(request):
@@ -144,13 +145,19 @@ def run_genetic_algorithm(request):
     if request.method == 'POST':
         try:
             # Load events from JSON
-            with open("./events/events.json", "r") as f:
-                json_data = json.load(f)
-            events = load_events_from_json(json_data)
+            json_data = json.loads(request.body)
+            events_data = json_data.get('events_data', [])
+            
+            # Ensure that at least one event is provided
+            if not events_data:
+                return JsonResponse({'error': 'At least one event must be provided'}, status=400)
+
+            # Extract events from the events_data
+            events = load_events_from_json(events_data)
 
             # Extract population size and number of generations
-            population_size = int(request.POST.get('population_size', 100))
-            num_generations = int(request.POST.get('num_generations', 100))
+            population_size = int(json_data.get('population_size', 100))
+            num_generations = int(json_data.get('num_generations', 100))
 
             # Run the genetic algorithm
             best_schedule = genetic_algorithm(events, population_size, num_generations)
@@ -169,4 +176,4 @@ def run_genetic_algorithm(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
-        return JsonResponse({'error': 'Method not allowed!!'}, status=405)
+        return JsonResponse({'error': 'Method not allowed'}, status=405)

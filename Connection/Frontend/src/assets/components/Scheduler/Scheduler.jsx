@@ -11,7 +11,7 @@ const Scheduler = () => {
         axios.get('http://localhost:8000/api/get-events/')
             .then(response => {
                 // Reverse the order of events before setting them in state
-                console.log(response.data);
+                console.log("hi",response.data);
                 setEvents(response.data.reverse());
             })
             .catch(error => {
@@ -52,7 +52,8 @@ const Scheduler = () => {
                                             <strong>Sub Events:</strong>
                                             <ul>
                                                 {event.subEvents.map(subEvent => (
-                                                    <li key={subEvent.name} className='font-semibold'>{subEvent.name}
+                                                    <li key={subEvent.name} className='font-semibold'>{subEvent.name} 
+                                                    <span className='px-4'>plot number:- {subEvent.spaceNumber}</span>
                                                         <div className='flex flex-row'>
 
                                                             <div className='font-semibold'> Duration :

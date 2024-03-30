@@ -16,40 +16,36 @@ class Schedule:
         self.fitness = None
 
     def calculate_fitness(self):
-        # Initialize fitness value
         self.fitness = 0
         
+        # Prioritize events with shorter durations first
+        self.events.sort(key=lambda x: x.duration)
+
         # Define constraints and objectives
         total_days = calculate_total_days(self.events[0].event_date, self.events[0].end_event_date)
         max_duration_per_slot = total_days * 24 * 60  # Convert days to minutes
 
-        # Iterate over events to calculate fitness
         for i, event in enumerate(self.events):
-            # Check if the event duration exceeds the maximum duration per slot
             if event.duration > max_duration_per_slot:
                 self.fitness -= 1000  # Penalize if duration exceeds the maximum
 
-            # Check if two events are using the same slot
             if i < len(self.events) - 1:
                 next_event = self.events[i + 1]
                 if event.space_number == next_event.space_number:
-                    # Check if the event with bigger duration starts first
                     if event.duration > next_event.duration:
-                        self.fitness -= 100  # Penalize if bigger event doesn't start first
-
-        # Print debug information
-        print("Fitness calculated for events:", self.events)
-        print("Fitness:", self.fitness)
-
+                        self.fitness  -= 100  # Penalize if an event with longer duration starts first
+                print("fitness", self.fitness)
 
 def generate_initial_population(population_size, events):
     population = []
     for _ in range(population_size):
         schedule = Schedule(events)
-        # Shuffle the events randomly to create a random schedule
         random.shuffle(schedule.events)
         population.append(schedule)
     return population
+
+# Remaining functions remain unchanged
+
 
 def selection(population, tournament_size):
     selected_parents = []
@@ -109,10 +105,7 @@ def genetic_algorithm(events, population_size, num_generations):
 
         # Calculate fitness for each schedule in the population and offspring
         for schedule in population + offspring:
-            print("Events before fitness calculation:", schedule.events)
             schedule.calculate_fitness()
-            print("Events after fitness calculation:", schedule.events)
-            print("Fitness:", schedule.fitness)
 
         # Survival selection
         population = population + offspring
@@ -127,7 +120,6 @@ def genetic_algorithm(events, population_size, num_generations):
     # Return the best schedule found after all generations
     return best_schedule
 
-
 def calculate_total_days(start_date, end_date):
     # Calculate total days between two dates
     delta = end_date - start_date
@@ -135,30 +127,13 @@ def calculate_total_days(start_date, end_date):
 
 def load_events_from_json(json_data):
     events = []
-    for event_data in json_data["events_data"]:
-        event_date = datetime.strptime(event_data["event_date"], "%Y-%m-%d")
-        end_event_date = datetime.strptime(event_data["end_event_date"], "%Y-%m-%d")
-        event = Event(event_data["name"], event_data["duration"], event_data["spaceNumber"], event_date, end_event_date)
+    for event_data in json_data:
+        event = Event(
+            name=event_data["name"],
+            duration=event_data["duration"],
+            space_number=event_data["spaceNumber"],
+            event_date=datetime.strptime(event_data["event_date"], "%Y-%m-%d"),
+            end_event_date=datetime.strptime(event_data["end_event_date"], "%Y-%m-%d")
+        )
         events.append(event)
     return events
-
-# if __name__ == "__main__":
-#     # Load events from JSON
-#     with open("F:/WEBDEV/MINIPROJECT FINAL/Connection/Backend/mysite/events/events.json", "r") as f:
-
-#         json_data = json.load(f)
-#     events = load_events_from_json(json_data)
-
-#     # Set parameters
-#     population_size = json_data["population_size"]
-#     num_generations = json_data["num_generations"]
-
-    # Run genetic algorithm
-    best_schedule = genetic_algorithm(events, population_size, num_generations)
-
-    # if best_schedule:
-    #     print("Best schedule:")
-    #     for event in best_schedule.events:
-    #         print("Event name:", event.name)
-    # else:
-    #     print("No best schedule found.")

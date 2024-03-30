@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+
 const Genetic = () => {
     const location = useLocation();
     const eventIndex = location.state ? location.state.eventIndex : '';
@@ -15,8 +16,9 @@ const Genetic = () => {
 
     useEffect(() => {
         if (eventIndex !== null && eventName !== '') {
-            axios.get('http://localhost:8000/api/get-events/')
+            axios.get(`http://localhost:8000/api/get-events/`)
                 .then(response => {
+                    console.log("get events ", response.data);
                     const reversedEvents = response.data.reverse();
                     if (reversedEvents && reversedEvents.length > eventIndex) {
                         const selectedEvent = reversedEvents[eventIndex];
@@ -26,10 +28,19 @@ const Genetic = () => {
                         setStartTime(eventStartTime); // Add this line to set the start time state
                         axios.get(`http://127.0.0.1:8000/api/get-sub-events/${selectedEventName}/`)
                             .then(subEventResponse => {
-                                setSubEvents(subEventResponse.data);
+                                console.log('Sub Event Response:', subEventResponse.data); // Log sub event data here
+                                const formattedSubEvents = subEventResponse.data.map(subEvent => ({
+                                    eventName: selectedEventName,
+                                    name: subEvent.name,
+                                    duration: subEvent.duration,
+                                    spaceNumber: subEvent.spaceNumber,
+                                    event_date: selectedEvent.date, // Assuming event_date is a property of selectedEvent
+                                    end_event_date: selectedEvent.endEventDate // Assuming end_event_date is a property of selectedEvent
+                                }));
+                                console.log('Formatted sub events:', formattedSubEvents);
+                                setSubEvents(formattedSubEvents);
                                 // Run genetic algorithm on sub events
-                                const schedule = geneticAlgorithm(subEventResponse.data);
-                                setBestSchedule(schedule);
+                                runGeneticAlgorithm(formattedSubEvents);
                             })
                             .catch(error => {
                                 console.error('Error fetching sub-events:', error);
@@ -44,84 +55,38 @@ const Genetic = () => {
         }
     }, [eventIndex]);
 
+    // Function to run genetic algorithm
+    // Function to run genetic algorithm
+    // Function to run genetic algorithm
+    // Function to run genetic algorithm
+    const runGeneticAlgorithm = (events) => {
+        console.log('Running genetic algorithm...', events);
+        const data = {
+            events_data: events,
+            population_size: 10,
+            num_generations: 10,
+        };
 
-    // Genetic Algorithm
-    const geneticAlgorithm = (events) => {
-        // Define parameters
-        const POPULATION_SIZE = 10;
-        const MAX_GENERATIONS = 10;
-        const TOURNAMENT_SIZE = 3;
-        const MUTATION_RATE = 0.1;
+        axios.post('http://localhost:8000/api/run-genetic-algorithm/', data)
+            .then(response => {
+                console.log('Genetic algorithm response = ', response.data.best_schedule);
+                // Update the state with the best schedule received from the backend
+                const updatedBestSchedule = {
+                    ...response.data.best_schedule,
+                    events: response.data.best_schedule.events.map((event, index) => ({
+                        ...event,
+                        space_number: events.find(subEvent => subEvent.name === event.name).spaceNumber, // Find the corresponding spaceNumber
+                    })),
+                };
+                setBestSchedule(updatedBestSchedule);
+                console.log('Best schedule:', updatedBestSchedule);
+            })
+            .catch(error => {
+                console.error('Error running genetic algorithm:', error);
+            });
+    };
 
-        // Function to evaluate fitness of a schedule
-        const fitness = (schedule) => {
-            const totalDuration = schedule.reduce((total, subEvent) => total + subEvent.duration, 0);
-            return totalDuration;
-        }
 
-        // Function to generate initial population
-        const generatePopulation = () => {
-            const population = [];
-            for (let i = 0; i < POPULATION_SIZE; i++) {
-                const schedule = [...events].sort(() => Math.random() - 0.5);
-                population.push(schedule);
-            }
-            return population;
-        }
-
-        // Function to perform tournament selection
-        const tournamentSelection = (population) => {
-            const selected = [];
-            for (let i = 0; i < population.length; i++) {
-                const contestants = [];
-                for (let j = 0; j < TOURNAMENT_SIZE; j++) {
-                    contestants.push(population[Math.floor(Math.random() * population.length)]);
-                }
-                const winner = contestants.reduce((max, current) => fitness(current) < fitness(max) ? current : max);
-                selected.push(winner);
-                // console.log("winner is " , winner);
-            }
-            return selected;
-        }
-
-        // Function to perform crossover
-        const crossover = (parent1, parent2) => {
-            const point = Math.floor(Math.random() * (events.length - 1)) + 1;
-            const child1 = [...parent1.slice(0, point), ...parent2.filter(event => !parent1.slice(0, point).some(e => e.name === event.name))];
-            const child2 = [...parent2.slice(0, point), ...parent1.filter(event => !parent2.slice(0, point).some(e => e.name === event.name))];
-            return [child1, child2];
-        }
-
-        // Function to perform mutation
-        const mutate = (schedule) => {
-            if (Math.random() < MUTATION_RATE) {
-                const idx1 = Math.floor(Math.random() * schedule.length);
-                let idx2 = Math.floor(Math.random() * schedule.length);
-                while (idx2 === idx1) idx2 = Math.floor(Math.random() * schedule.length);
-                [schedule[idx1], schedule[idx2]] = [schedule[idx2], schedule[idx1]];
-                console.log("mutation is " , idx1);
-            }
-            return schedule;
-        }
-
-        // Initial population
-        let population = generatePopulation();
-
-        // Genetic algorithm loop
-        for (let generation = 0; generation < MAX_GENERATIONS; generation++) {
-            const selected = tournamentSelection(population);
-            let nextPopulation = [];
-            while (nextPopulation.length < POPULATION_SIZE) {
-                const [parent1, parent2] = [selected[Math.floor(Math.random() * selected.length)], selected[Math.floor(Math.random() * selected.length)]];
-                const [child1, child2] = crossover(parent1, parent2).map(mutate);
-                nextPopulation = nextPopulation.concat([child1, child2]);
-            }
-            population = nextPopulation;
-        }
-
-        // Return the best schedule found
-        return population.reduce((best, current) => fitness(current) < fitness(best) ? current : best);
-    }
 
     // Helper function to format time (assuming time is in 24-hour format)
     const formatTime = (time) => {
@@ -131,19 +96,29 @@ const Genetic = () => {
     }
 
     // Calculate start and end times for each subevent based on event start time and durations
-    const calculateEventTimes = (schedule) => {
-        let currentTime = parseFloat(startTime); // Parse the start time as a float
-        return schedule.map(subEvent => {
-            const startTime = currentTime;
-            const endTime = currentTime + subEvent.duration;
-            currentTime = endTime; // Update the current time for the next subevent
-            return { ...subEvent, startTime, endTime };
+    // Calculate start and end times for each subevent based on event start time and durations
+    const calculateEventTimes = () => {
+        if (!bestSchedule || !bestSchedule.events) return []; // Add this check
+        let currentTime = parseFloat(startTime);
+        const sortedEvents = bestSchedule.events.slice().sort((a, b) => a.startTime - b.startTime); // Sort events by start time
+        return sortedEvents.map(subEvent => {
+            const correspondingEvent = subEvents.find(event => event.name === subEvent.name);
+            if (correspondingEvent) {
+                const startTime = currentTime;
+                const endTime = currentTime + correspondingEvent.duration;
+                currentTime = endTime;
+                return { ...correspondingEvent, startTime, endTime, spaceNumber: subEvent.space_number };
+            }
+            return subEvent;
         });
-    }
+    };
+
+
+
 
     return (
         <>
-        <Navbar/>
+            <Navbar />
             <h1 className='text-3xl text-center sticky mt-10 underline font-bold'>Genetic Algorithm</h1>
             <div className='flex justify-center items-center mt-32'>
                 <div className='border-2 border-blue-500 p-10 cursor-pointer rounded-md hover:border-yellow-300 hover:scale-110 transition duration-500'>
@@ -153,14 +128,12 @@ const Genetic = () => {
                         </div>
                         <div className='flex flex-col'>
                             <h2 className='font-semibold mt-4'>Subevents:</h2>
-
                             {subEvents.map((subEvent, index) => (
                                 <tr key={index} className="">
                                     <td className="border border-gray-400 p-2 w-60">{subEvent.name}</td>
                                     <td className="border border-gray-400 p-2">{subEvent.duration}</td>
                                 </tr>
                             ))}
-
                         </div>
                     </div>
                 </div>
@@ -175,18 +148,23 @@ const Genetic = () => {
                             <th className="border border-gray-400 p-2">Duration</th>
                             <th className="border border-gray-400 p-2">Start Time</th>
                             <th className="border border-gray-400 p-2">End Time</th>
+                            <th className="border border-gray-400 p-2">Space Number</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {calculateEventTimes(bestSchedule).map((subEvent, index) => (
-                            <tr key={index} className="hover:bg-gray-300 hover:text-lg transitin duration-150">
-                                <td className="border border-gray-400 p-2">{subEvent.name}</td>
-                                <td className="border border-gray-400 p-2">{subEvent.duration}</td>
-                                <td className="border border-gray-400 p-2">{formatTime(subEvent.startTime)}</td>
-                                <td className="border border-gray-400 p-2">{formatTime(subEvent.endTime)}</td>
+                        {calculateEventTimes().map((updatedBestSchedule, index) => (
+                            <tr key={index} className="hover:bg-gray-300 hover:text-lg transition duration-150">
+                                <td className="border border-gray-400 p-2">{updatedBestSchedule.name}</td>
+                                <td className="border border-gray-400 p-2">{updatedBestSchedule.duration}</td>
+                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.startTime)}</td>
+                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.endTime)}</td>
+                                <td className="border border-gray-400 p-2">{updatedBestSchedule.spaceNumber}</td>
                             </tr>
                         ))}
                     </tbody>
+
+
+
                 </table>
             </div>
         </>
