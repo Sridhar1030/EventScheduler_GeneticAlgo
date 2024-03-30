@@ -152,23 +152,21 @@ const Genetic = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {calculateEventTimes().map((updatedBestSchedule, index) => (
+                        {bestSchedule.events && bestSchedule.events.map((updatedBestSchedule, index) => (
                             <tr key={index} className="hover:bg-gray-300 hover:text-lg transition duration-150">
                                 <td className="border border-gray-400 p-2">{updatedBestSchedule.name}</td>
                                 <td className="border border-gray-400 p-2">{updatedBestSchedule.duration}</td>
-                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.startTime)}</td>
-                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.endTime)}</td>
-                                <td className="border border-gray-400 p-2">{updatedBestSchedule.spaceNumber}</td>
+                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time)}</td>
+                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time+updatedBestSchedule.duration)}</td>
+                                <td className="border border-gray-400 p-2">{updatedBestSchedule.space_number}</td>
                             </tr>
                         ))}
                     </tbody>
-
-
-
                 </table>
             </div>
         </>
     );
+    
 }
 
 export default Genetic;

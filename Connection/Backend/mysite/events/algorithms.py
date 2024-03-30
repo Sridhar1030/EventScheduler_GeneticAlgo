@@ -9,6 +9,7 @@ class Event:
         self.space_number = space_number
         self.event_date = event_date
         self.end_event_date = end_event_date
+        self.start_time = 10  # Set the start time to 10:00 AM
 
 class Schedule:
     def __init__(self, events):
@@ -18,23 +19,38 @@ class Schedule:
     def calculate_fitness(self):
         self.fitness = 0
         
-        # Prioritize events with shorter durations first
+        # Sort events by duration in ascending order
         self.events.sort(key=lambda x: x.duration)
 
-        # Define constraints and objectives
-        total_days = calculate_total_days(self.events[0].event_date, self.events[0].end_event_date)
-        max_duration_per_slot = total_days * 24 * 60  # Convert days to minutes
+        # Initialize a dictionary to keep track of start times for each space number
+        space_start_times = {}
 
-        for i, event in enumerate(self.events):
-            if event.duration > max_duration_per_slot:
-                self.fitness -= 1000  # Penalize if duration exceeds the maximum
+        # Iterate through each event to calculate fitness and set start time
+        for event in self.events:
+            event.start_time = 10  # Set start time to 10:00 AM for all events by default
 
-            if i < len(self.events) - 1:
-                next_event = self.events[i + 1]
-                if event.space_number == next_event.space_number:
-                    if event.duration > next_event.duration:
-                        self.fitness  -= 100  # Penalize if an event with longer duration starts first
-                print("fitness", self.fitness)
+            # Penalize if event starts before 10:00 AM
+            if event.event_date.hour < 10:
+                self.fitness -= 100
+
+            # Check if there's a conflict with the same space number
+            if event.space_number in space_start_times:
+                # If conflict, check if current event has shorter duration than the one already scheduled
+                if event.duration < space_start_times[event.space_number]:
+                    # Penalize if current event with shorter duration starts after the one already scheduled
+                    self.fitness -= 100
+                else:
+                    # Update start time for the current event based on the previous event's duration
+                    event.start_time = space_start_times[event.space_number]
+            else:
+                # Update the start time for the space number with the current event's duration
+                space_start_times[event.space_number] = event.duration
+
+        # Return the calculated fitness
+        return self.fitness
+
+# Assuming the rest of the code remains unchanged
+
 
 def generate_initial_population(population_size, events):
     population = []
@@ -43,9 +59,6 @@ def generate_initial_population(population_size, events):
         random.shuffle(schedule.events)
         population.append(schedule)
     return population
-
-# Remaining functions remain unchanged
-
 
 def selection(population, tournament_size):
     selected_parents = []
