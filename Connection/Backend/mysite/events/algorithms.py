@@ -9,7 +9,7 @@ class Event:
         self.space_number = space_number
         self.event_date = event_date
         self.end_event_date = end_event_date
-        self.start_time = 10  # Set the start time to 10:00 AM
+        self.start_time = None
 
 class Schedule:
     def __init__(self, events):
@@ -23,31 +23,27 @@ class Schedule:
         self.events.sort(key=lambda x: x.duration)
 
         # Initialize a dictionary to keep track of start times for each space number
-        space_start_times = {}
+        space_schedule = {}
 
         # Iterate through each event to calculate fitness and set start time
         for event in self.events:
-            event.start_time = 10  # Set start time to 10:00 AM for all events by default
+            event.start_time = 10  # Set start time to 10:00 AM by default
 
             # Penalize if event starts before 10:00 AM
             if event.event_date.hour < 10:
                 self.fitness -= 100
 
-            # Check if there's a conflict with the same space number
-            if event.space_number in space_start_times:
-                # If conflict, check if current event has shorter duration than the one already scheduled
-                if event.duration < space_start_times[event.space_number]:
-                    # Penalize if current event with shorter duration starts after the one already scheduled
-                    self.fitness -= 100
-                else:
-                    # Update start time for the current event based on the previous event's duration
-                    event.start_time = space_start_times[event.space_number]
+            # Check for conflicts with events in the same space
+            if event.space_number in space_schedule:
+                start_time = max(space_schedule[event.space_number], event.event_date.hour)
+                event.start_time = start_time
+                space_schedule[event.space_number] = start_time + event.duration
             else:
-                # Update the start time for the space number with the current event's duration
-                space_start_times[event.space_number] = event.duration
+                space_schedule[event.space_number] = event.event_date.hour + event.duration
 
         # Return the calculated fitness
         return self.fitness
+
 
 # Assuming the rest of the code remains unchanged
 
