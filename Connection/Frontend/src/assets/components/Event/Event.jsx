@@ -35,7 +35,7 @@ function Events() {
     // Render the component
     return (
         <>
-            {/* Navbar component... */}
+            <Navbar />
             <h1 className='border-2 border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10 bg-gray'>LIVE EVENTS</h1>
             <div className='mt-5 ml-10'>
                 {/* Map through the list of events and render each event */}
