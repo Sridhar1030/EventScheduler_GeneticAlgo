@@ -22,7 +22,7 @@ const YourEvents = () => {
             {registeredEvents.map(event => (
                 <div 
                     key={event.id} // Ensure each event has a unique key
-                    className='gap-10 w-96 h-28 mx-auto mt-10 bg-blue-300 relative' 
+                    className='gap-10 w-96 h-36 mx-auto mt-10 bg-blue-300 relative ' 
                     style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', transition: 'box-shadow 0.3s, background-color 0.3s', border: 'none' }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.boxShadow = '0 8px 12px rgba(159, 160, 222, 0.8)';
@@ -37,6 +37,7 @@ const YourEvents = () => {
                         <h2 className='pt-4 ml-7'>Username: {event.username}</h2> {/* Adjusted margin-top */}
                         <h2 className='ml-7'>Eventname: {event.eventName}</h2>
                         <h2 className='ml-7'>Sub Eventname: {event.subEventName}</h2>
+                        <h2 className='ml-7 '>Space Number: {event.spaceNumber}</h2>
                     </div>
                     
                 </div>

@@ -33,7 +33,7 @@ const Create = () => {
             console.error('Error creating event:', error);
         }
     };
-    
+
 
     const addSubEvent = () => {
         if (customSubEvent.trim() !== '' && subEventDuration.trim() !== '' && spaceNumber.trim() !== '') { // Check if space number is provided
@@ -120,7 +120,7 @@ const Create = () => {
                         <label className="font-normal text-gray-500 text-xl mt-2"> Event End Time</label>
 
                         {/* Sub Event Name */}
-                        <div className='mt-10 flex gap-3 justify-center items-center'>
+                        <div className='mt-10 flex gap-3 justify-center items-center flex-col '>
                             <input
                                 type="text"
                                 value={customSubEvent}
@@ -129,7 +129,7 @@ const Create = () => {
                                 className=" h-14 peer w-full  bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 focus:text-sm px-3 py-2.5 rounded-[7px] 
                                 - blue-gray-200 focus:border-gray-900"
                             />
-                            <label className="block  text-gray-500 mb-1 text-xl">Event Name</label>
+                            <label className="block  text-gray-500 mb-1 text-xl">Sub Event Name</label>
                         </div>
                         {/* Space Number */}
                         <input
@@ -138,7 +138,7 @@ const Create = () => {
                             onChange={(e) => setSpaceNumber(e.target.value)}
                             placeholder="Enter Space Number"
                             className="h-14 peer w-full  bg-white text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 focus:text-sm px-3 py-2.5 rounded-[7px] 
-    - blue-gray-200 focus:border-gray-900"
+    - blue-gray-200 focus:border-gray-900 mt-4"
                         />
                         <label className="block  text-gray-500 mb-1 text-xl">Space Number</label>
 
@@ -155,9 +155,9 @@ const Create = () => {
                             <label className="font-normal text-gray-500 text-xl mt-2"> Sub Event Duration</label>
 
                             {/* Add Sub Event Button */}
-                            <div className='mt-10 flex gap-3 justify-center items-center'>
+                            <div className=' mt-10 flex gap-3 justify-center items-center'>
                                 <button
-                                    className='w-32 align-middle flex h-10 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                                    className='w-32 align-middle flex h-10 text-sm font-medium text-white bg-gray-600 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 justify-center items-center '
                                     onClick={addSubEvent}
                                 >
                                     Add Sub Event

@@ -11,7 +11,9 @@ function EventForm() {
         username: '', // Add username state
         eventName: '', // Add eventName state
         subEventName: '', // Add subEventName state
+        space_number: '', // Add spaceNumber state
     });
+    
 
     const [subEvents, setSubEvents] = useState([]); // State to store sub-events
     useEffect(() => {
@@ -28,7 +30,19 @@ function EventForm() {
                         }));
                         axios.get(`http://127.0.0.1:8000/api/get-sub-events/${selectedEventName}/`)
                             .then(subEventResponse => {
-                                setSubEvents(subEventResponse.data);
+                                console.log('Sub-events:', subEventResponse.data);
+                                const subEventsData = subEventResponse.data;
+                                setSubEvents(subEventsData);
+                                
+                                // Find the selected sub event
+                                const selectedSubEvent = subEventsData.find(subEvent => subEvent.name === formData.subEventName);
+                                if (selectedSubEvent) {
+                                    // Set the space number from the selected sub event
+                                    setFormData(prevFormData => ({
+                                        ...prevFormData,
+                                        space_number: selectedSubEvent.spaceNumber
+                                    }));
+                                }
                             })
                             .catch(error => {
                                 console.error('Error fetching sub-events:', error);
@@ -41,28 +55,33 @@ function EventForm() {
                     console.error('Error fetching events:', error);
                 });
         }
-    }, [eventIndex]);
-
+    }, [eventIndex, eventName, formData.subEventName]);
+    
+    
     const handleChange = (e) => {
+        console.log('Event target:', e.target);
+        console.log('Form data before update:', formData);
         setFormData({
             ...formData,
-            [e.target.id]: e.target.value
+            [e.target.id]: e.target.value,
+            space_number: e.target.id === "subEventName" ? subEvents.find(subEvent => subEvent.name === e.target.value).space_number : formData.space_number
         });
+        console.log('Form data after update:', formData);
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-        axios.post('http://127.0.0.1:8000/api/register-event/', formData)
-            .then(response => {
-                console.log(response.data);
-                // Handle success, e.g., show a success message or redirect
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle error, e.g., show an error message
-            });
-    };
+    
+const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData); // Add this line to log formData
+    axios.post('http://127.0.0.1:8000/api/register-event/', formData)
+        .then(response => {
+            console.log("hi" ,response.data);
+            // Handle success
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error
+        });
+};
 
     return (
         <div className='bg-black h-screen text-white'>
@@ -78,6 +97,7 @@ function EventForm() {
                 <div className="mb-5 gap-10">
                     <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                     <input type="text" id="username" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={handleChange} />
+
                 </div>
                 <div className="mb-5 gap-10">
                     <label htmlFor="subEventName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Event Name</label>

@@ -64,11 +64,11 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
 class RegisteredEvent(models.Model):
     username = models.CharField(max_length=150)
     sub_event_name = models.CharField(max_length=255)  # New field for sub-event name
     event_name = models.CharField(max_length=255)
+    space_number = models.IntegerField()  # Add the space_number field
     time = models.DateTimeField(default=timezone.now)  # Add the time field
 
     def __str__(self):

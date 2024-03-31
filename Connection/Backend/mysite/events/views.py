@@ -104,6 +104,7 @@ def register_event(request):
             username = data.get('username', '')
             sub_event_name = data.get('subEventName', '')
             event_name = data.get('eventName', '')
+            space_number = data.get('spaceNumber', '')
 
             if username and sub_event_name and event_name:
                 # Retrieve the associated subevent
