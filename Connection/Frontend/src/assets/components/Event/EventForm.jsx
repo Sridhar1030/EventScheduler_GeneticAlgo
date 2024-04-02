@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
 
 function EventForm() {
     const location = useLocation();
@@ -85,6 +86,7 @@ const handleSubmit = (e) => {
 
     return (
         <div className='bg-black h-screen text-white'>
+            <Navbar/>
             <div className='w-full h-10'></div>
             <div className='flex flex-col top-10'>
                 <h2 className='text-center text-4xl top-10 gap-10 mb-10'>Event Form for {formData.eventName}</h2>
