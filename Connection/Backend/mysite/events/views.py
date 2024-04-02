@@ -5,6 +5,46 @@ from .models import Event, RegisteredEvent, SubEvent
 import json
 from django.utils import timezone
 from datetime import datetime
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import RegisteredEvent
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+    
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/api/token',
+        '/api/token/refresh',
+        
+    ]
+
+
+    return Response(routes)
+
+
+
+
+
+
+
+
+
 @csrf_exempt
 def clear_database(request):
     try:
@@ -101,8 +141,8 @@ def register_event(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            username = data.get('username', '')
             sub_event_name = data.get('subEventName', '')
+            username = data.get('username', '')
             event_name = data.get('eventName', '')
             space_number = data.get('spaceNumber', '')
 

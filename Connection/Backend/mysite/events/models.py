@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import time
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 class Event(models.Model): 
     name = models.CharField(max_length=255)
     date = models.DateField(default=timezone.now)  # First date field
@@ -29,7 +29,7 @@ class SubEvent(models.Model):
 
 
 class RegisteredEvent(models.Model):
-    username = models.CharField(max_length=150)
+    username = models.CharField(max_length=150 , default = '')
     sub_event_name = models.CharField(max_length=255)  # New field for sub-event name
     event_name = models.CharField(max_length=255)
     space_number = models.IntegerField()  # Add the space_number field

@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
 import { Link } from 'react-router-dom';
+
+
+
+
 // Function to calculate the total number of days between two dates
 function calculateTotalDays(startDate, endDate) {
     if (!startDate || !endDate) return 0; // Handle cases where either startDate or endDate is undefined
@@ -16,6 +20,7 @@ function calculateTotalDays(startDate, endDate) {
 
 // Component to display events
 function Events() {
+
     // State to store the list of events
     const [events, setEvents] = useState([]);
 
@@ -36,6 +41,7 @@ function Events() {
     return (
         <>
             <Navbar />
+            
             <h1 className='border-2 border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10 bg-gray'>LIVE EVENTS</h1>
             <div className='mt-5 ml-10'>
                 {/* Map through the list of events and render each event */}
