@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
 import { Link } from 'react-router-dom';
@@ -40,64 +40,67 @@ function Events() {
     // Render the component
     return (
         <>
-            <Navbar />
-            
-            <h1 className='border-2 border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10 bg-gray'>LIVE EVENTS</h1>
-            <div className='mt-5 ml-10'>
-                {/* Map through the list of events and render each event */}
-                {events.map((event, index) => {
-                    return (
-                        <Link
-                            to={`/${event.name}`}
-                            state={{ eventIndex: index }}
-                            key={event.id}
-                        >
-                            <div>
-                                <button className='flex'>
-                                    <div className='cursor-pointer border border-red-500 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
-                                        <div className='flex gap-3'>
-                                            <div><h2>Event Name : </h2></div>
-                                            <div className='font-medium underline capitalize'>{event.name}</div>
-                                        </div>
-                                        <div>
-                                            <strong>Start Date:</strong> {event.date}
-                                        </div>
-                                        <div>
-                                            <strong>End Date:</strong> {event.endEventDate}
-                                        </div>
-                                        <div>
-                                            <strong>Total Days:</strong> {calculateTotalDays(event.date, event.another_date)}
-                                        </div>
-                                        {/* Display sub-events if available */}
-                                        {event.subEvents && event.subEvents.length > 0 && (
+            <div className='bg-gray-900'>
+
+                <Navbar />
+
+                <h1 className='border-2 border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10 bg-gray text-white '>LIVE EVENTS</h1>
+                <div className='mt-5 ml-10 text-white'>
+                    {/* Map through the list of events and render each event */}
+                    {events.map((event, index) => {
+                        return (
+                            <Link
+                                to={`/${event.name}`}
+                                state={{ eventIndex: index }}
+                                key={event.id}
+                            >
+                                <div >
+                                    <button className='flex'>
+                                        <div className='bg-blue-400 cursor-pointer  w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
+                                            <div className='flex gap-3'>
+                                                <div><h2>Event Name : </h2></div>
+                                                <div className='font-medium underline capitalize'>{event.name}</div>
+                                            </div>
                                             <div>
-                                                <strong>Sub Events:</strong>
-                                                <ul>
-                                                    {event.subEvents.map(subEvent => (
-                                                        <li key={subEvent.name}>
-                                                            {subEvent.name} - {subEvent.duration}
-                                                            {subEvent.spaceNumber && (
-                                                                <span>, Slot: {subEvent.spaceNumber}</span>
-                                                            )}
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                                <strong>Start Date:</strong> {event.date}
                                             </div>
-                                        )}
-                                        <div>
-                                            <div className='font-medium underline'>
-                                                EVENT TIME
+                                            <div>
+                                                <strong>End Date:</strong> {event.endEventDate}
                                             </div>
-                                            <div className='font-semibold'>
-                                                {event.startTime} to {event.end_Time}
+                                            <div>
+                                                <strong>Total Days:</strong> {calculateTotalDays(event.date, event.another_date)}
+                                            </div>
+                                            {/* Display sub-events if available */}
+                                            {event.subEvents && event.subEvents.length > 0 && (
+                                                <div>
+                                                    <strong>Sub Events:</strong>
+                                                    <ul>
+                                                        {event.subEvents.map(subEvent => (
+                                                            <li key={subEvent.name}>
+                                                                {subEvent.name} - {subEvent.duration}
+                                                                {subEvent.spaceNumber && (
+                                                                    <span>, Slot: {subEvent.spaceNumber}</span>
+                                                                )}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                            <div>
+                                                <div className='font-medium underline'>
+                                                    EVENT TIME
+                                                </div>
+                                                <div className='font-semibold'>
+                                                    {event.startTime} to {event.end_Time}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </button>
-                            </div>
-                        </Link>
-                    );
-                })}
+                                    </button>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </div>
             </div>
         </>
     );

@@ -11,7 +11,7 @@ function Navbar() {
 
 
 
-            <div className="flex justify-start space-x-11 h-20">
+            <div className="flex items-center align-middle justify-start space-x-11 h-20">
                 <div className="flex justify-center align-middle">
                     <button>
                         <Link to="/home" className="text-2xl flex justify-center align-middle items-center">
@@ -32,11 +32,20 @@ function Navbar() {
                     </div>
                 </div>
 
-                <div className="fixed flex justify-items-center items-center right-10 p-4 cursor-pointer">
+                <div className="absolute flex gap-2 justify-items-center items-center align-middle justify-start right-10 cursor-pointer">
                     {user && <p> Hello {user.name} </p>}
-                    {[user ? <button><Link to="/login" onClick={logoutUser} className="hover:text-xl hover:text-white">Logout</Link></button>
+
+                    {[user ? 
+                    <div className='flex flex-row-reverse'>
+                        <button><Link to="/login" onClick={logoutUser} className="hover:text-xl hover:text-white">Logout</Link>
+                    </button>
+                    {/* <img className='size-10' src="https://cdn.iconscout.com/icon/free/png-512/free-user-1556-528036.png?f=webp&w=256" alt="hi" />
+                             */}
+                        </div>
                         :
-                        <button><Link to="/login" className="hover:text-xl hover:text-white">Login</Link></button>]}
+                        <button><Link to="/login" className="hover:text-xl hover:text-white">Login
+                            </Link>
+                            </button>]}
 
                 </div>
             </div>
