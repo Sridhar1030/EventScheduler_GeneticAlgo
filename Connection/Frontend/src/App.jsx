@@ -41,8 +41,8 @@ function App() {
 
 
               <Route path="/login" element={<Login />} />
-              
-            <Route path="/" element={<Private />}>
+
+            {/* <Route path="/" element={<Private />}> */}
 
               <Route path="/home" element={<Home />} />
               <Route path="/create" element={<Create />} />
@@ -66,7 +66,7 @@ function App() {
               ))}
               <Route path="/enrolled" element={<YourEvents />} />
               <Route path="/DELETE" element={<Delete />} />
-            </Route>
+            {/* </Route> */}
 
           </Routes>
         </AuthProvider>

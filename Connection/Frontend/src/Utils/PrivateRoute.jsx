@@ -7,6 +7,7 @@ const PrivateRoute = ({ children, ...rest }) => {
 
     
     return(
+        
         <Route {...rest}>{!user ? <Navigate to="/login" /> :   children}</Route>
     )
 };

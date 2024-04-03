@@ -40,7 +40,7 @@ function Events() {
     // Render the component
     return (
         <>
-            <div className='bg-gray-900'>
+            <div className='bg-gray-900 h-screen'>
 
                 <Navbar />
 

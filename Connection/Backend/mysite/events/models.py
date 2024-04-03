@@ -37,3 +37,5 @@ class RegisteredEvent(models.Model):
 
     def __str__(self):
         return f"{self.username} - {self.event_name} - {self.sub_event_name}"
+
+

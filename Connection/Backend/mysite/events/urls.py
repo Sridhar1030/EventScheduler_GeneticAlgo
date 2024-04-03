@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_event, get_events, register_event, get_sub_events, clear_database, get_registered_events,getRoutes,run_genetic_algorithm  # Import the run_genetic_algorithm view
+from .views import create_event, get_events, register_event, get_sub_events, clear_database, get_registered_events,getRoutes,run_genetic_algorithm,tournament_schedule_view  # Import the run_genetic_algorithm view
 from .views import MyTokenObtainPairView
 
 from rest_framework_simplejwt.views import (
@@ -21,5 +21,6 @@ urlpatterns = [
     path('get-registered-events/', get_registered_events, name='get_registered_events'),
     path('register-event/', register_event, name='register_event'),
     path('get-sub-events/<str:event_name>/', get_sub_events, name='get_sub_events'),
-    path('run-genetic-algorithm/', run_genetic_algorithm, name='run_genetic_algorithm'),  # Add this URL pattern
+    path('run-genetic-algorithm/', run_genetic_algorithm, name='run_genetic_algorithm'),
+    path('tournament/<str:event_name>/', tournament_schedule_view, name='tournament_schedule'),# Add this URL pattern
 ]

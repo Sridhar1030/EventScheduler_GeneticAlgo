@@ -3,18 +3,21 @@ import { Navigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 
 const Private = () => {
-    
+    const [token, setToken] = useState(null);
+
     useEffect(() => {
         const fetchToken = () => {
-            const token = localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null;
-        }
-        fetchToken()
-    },[])
-
+            const storedToken = localStorage.getItem('authTokens');
+            if (storedToken) {
+                setToken(JSON.parse(storedToken));
+            }
+        };
+        fetchToken();
+    }, []);
 
     return (
         <>
-            {token ? <Outlet /> : <Navigate to="/login" />}
+            {token?.refresh ? <Outlet /> : <Navigate to="/login" />}
         </>
     );
 };

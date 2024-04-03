@@ -13,6 +13,14 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import RegisteredEvent
+
+
+from django.http import JsonResponse
+from .round import create_round, determine_round_winners
+from .models import RegisteredEvent
+
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -176,6 +184,8 @@ def get_registered_events(request):
                 'spaceNumber': sub_event.space_number
             }
             event_list.append(event_data)
+            print(event.username)
+
         return JsonResponse(event_list, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -214,6 +224,36 @@ def run_genetic_algorithm(request):
                 return JsonResponse(result, status=200)
             else:
                 return JsonResponse({"error": "No best schedule found."}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+
+
+@csrf_exempt            
+def tournament_schedule_view(request, event_name):
+    if request.method == 'POST':
+        try:
+            # Decode the request body from bytes to a JSON string
+            body_unicode = request.body.decode('utf-8')
+            
+            # Parse the JSON string to a Python dictionary
+            request_data = json.loads(body_unicode)
+
+            # Retrieve the list of registered events from the request data
+            registered_events = request_data.get('registered_events', [])
+
+            # Extract usernames from the registered events
+            players = [event['username'] for event in registered_events]
+
+            # Call the algorithm functions to schedule the tournament matches
+            round_matches = create_round(players)
+            winners = determine_round_winners(round_matches)
+
+            # Return the tournament schedule with the winners
+            return JsonResponse({'round_matches': round_matches, 'winners': winners}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
