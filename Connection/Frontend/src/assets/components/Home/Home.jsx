@@ -1,11 +1,11 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import gif from '../../Gif/4.gif'
+import gif from '../../Gif/Final.gif'
 import svg from '../../Gif/SVG.svg'
 import { Link } from 'react-router-dom';
 const Home = () => {
     return (
-        <div className="flex flex-col min-h-screen bg-gray-900 text-white">
+        <div className="flex flex-col min-h-screen bg-[#0D1117] text-white ">
             <div className="flex-grow">
                 <Navbar />
                 
@@ -43,7 +43,7 @@ const Home = () => {
                                 src={gif}
                                 alt="Homepage"
 
-                                className="size-96 right-0 absolute "
+                                className="size-[450px] right-20 absolute "
                             />
                             <div>
 
@@ -53,7 +53,7 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="bg-gray-800 py-10 text-center">
+            <div className="bg-black py-10 text-center">
                 <div className='mb-1'>
                     <p className="text-lg">Contact us for more information</p>
                     <p className="text-2xl font-bold"></p>

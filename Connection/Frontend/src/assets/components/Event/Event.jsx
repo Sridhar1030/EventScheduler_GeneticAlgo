@@ -40,12 +40,12 @@ function Events() {
     // Render the component
     return (
         <>
-            <div className='bg-gray-900 h-screen'>
+            <div className='bg-[#0D1117] h-full min-h-screen'>
 
                 <Navbar />
 
                 <h1 className='border-2 border-blue-500 w-96 text-2xl mx-auto text-center mt-6 mb-10 bg-gray text-white '>LIVE EVENTS</h1>
-                <div className='mt-5 ml-10 text-white'>
+                <div className='mt-5 ml-10 text-white flex flex-wrap gap-10 '>
                     {/* Map through the list of events and render each event */}
                     {events.map((event, index) => {
                         return (
@@ -54,9 +54,9 @@ function Events() {
                                 state={{ eventIndex: index }}
                                 key={event.id}
                             >
-                                <div >
-                                    <button className='flex'>
-                                        <div className='bg-blue-400 cursor-pointer  w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
+                                <div className='border border-slate-300 bg-black h-[400px] mb-10 ' >
+                                    <button className='flex '>
+                                        <div className=' cursor-pointer  w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
                                             <div className='flex gap-3'>
                                                 <div><h2>Event Name : </h2></div>
                                                 <div className='font-medium underline capitalize'>{event.name}</div>

@@ -55,10 +55,6 @@ const Genetic = () => {
         }
     }, [eventIndex]);
 
-    // Function to run genetic algorithm
-    // Function to run genetic algorithm
-    // Function to run genetic algorithm
-    // Function to run genetic algorithm
     const runGeneticAlgorithm = (events) => {
         console.log('Running genetic algorithm...', events);
         const data = {
@@ -119,9 +115,11 @@ const Genetic = () => {
     return (
         <>
             <Navbar />
-            <h1 className='text-3xl text-center sticky mt-10 underline font-bold'>Genetic Algorithm</h1>
+            <div className='bg-[#0D1117] text-white h-full min-h-screen'>
+
+            <h1 className='text-3xl text-center sticky  underline font-bold'>Genetic Algorithm</h1>
             <div className='flex justify-center items-center mt-32'>
-                <div className='border-2 border-blue-500 p-10 cursor-pointer rounded-md hover:border-yellow-300 hover:scale-110 transition duration-500'>
+                <div className='border-2 border-white p-10 cursor-pointer rounded-md hover:border-blue-500 hover:scale-110 transition duration-500'>
                     <div className=''>
                         <div className='font-bold underline text-2xl'>
                             Event Name : {event}
@@ -138,8 +136,8 @@ const Genetic = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-8 flex flex-col justify-center mx-auto text-center w-96 h-96 mb-10">
-                <h1>Algorithm implementation</h1>
+            <div className="mt-8 flex flex-col justify-center mx-auto text-center w-96 h-96 ">
+                <h1>Genetic Algorithm</h1>
                 <h2 className="font-semibold">Subevents Table:</h2>
                 <table className="border-collapse border border-gray-400 mt-2">
                     <thead>
@@ -153,7 +151,7 @@ const Genetic = () => {
                     </thead>
                     <tbody>
                         {bestSchedule.events && bestSchedule.events.map((updatedBestSchedule, index) => (
-                            <tr key={index} className="hover:bg-gray-300 hover:text-lg transition duration-150">
+                            <tr key={index} className="hover:bg-black hover:text-lg transition duration-150">
                                 <td className="border border-gray-400 p-2">{updatedBestSchedule.name}</td>
                                 <td className="border border-gray-400 p-2">{updatedBestSchedule.duration}</td>
                                 <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time)}</td>
@@ -164,6 +162,7 @@ const Genetic = () => {
                     </tbody>
                 </table>
             </div>
+                        </div>
         </>
     );
     

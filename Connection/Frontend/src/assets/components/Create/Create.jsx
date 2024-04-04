@@ -198,7 +198,7 @@ const Create = () => {
     };
 
     return (
-        <div className='bg-gray-900 h-screen bottom-0'>
+        <div className='bg-[#0D1117] h-screen bottom-0'>
             <Navbar />
             <div className='flex justify-center align-middle items-center '>
                 <div className="w-72 mt-20 flex flex-col justify-center items-center align-middle ">

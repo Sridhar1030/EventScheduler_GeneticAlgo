@@ -22,46 +22,45 @@ const Scheduler = () => {
     return (
         <>
             <Navbar />
-            <div className='mt-1 h-svh'>
+            <div className=' h-full min-h-screen bg-[#0D1117]  text-white'>
                 <h1 className='text-3xl text-center sticky'>Scheduler</h1>
-                <div className='ml-10'>
+                <div className='ml-10 flex flex-wrap gap-10 mt-10 '>
                     {events.map((event, index) => (
                         <Link
                             to={`/genetic/${event.name}`}
                             state={{ eventIndex: index }}
                             key={event.id}
                         >
-                            <div className=''>
-                                <div className='cursor-pointer border-2 border-blue-700 w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
+                            <div className='h-'>
+                                <div className='cursor-pointer border-2 border-[#e0cece] h-[450px] w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
                                     <div className='flex gap-3'>
                                         <div><h2>Event Name : </h2></div>
                                         {/* Check if the property name is 'eventName' */}
-                                        <div className='font-medium underline capitalize'>{event.name}</div>
+                                        <div className='font-semibold capitalize'>{event.name}</div>
                                     </div>
-                                    <div>
-                                        <strong>Start Date:</strong> {event.date}
+                                    <div className='flex gap-2'>
+                                        <h3>Start Date:</h3> {event.date}
                                     </div>
-                                    <div>
-                                        <strong>End Date:</strong> {event.endEventDate}
+                                    <div className='flex gap-2'>
+                                        <h3>End Date:</h3> {event.endEventDate}
                                     </div>
 
                                     {/* Check if the property name is 'subEvents' */}
                                     {/* Display sub-events if available */}
                                     {event.subEvents && event.subEvents.length > 0 && (
                                         <div>
-                                            <strong>Sub Events:</strong>
+                                            <h2>Sub Events:</h2>
                                             <ul>
                                                 {event.subEvents.map(subEvent => (
                                                     <li key={subEvent.name} className='font-semibold'>{subEvent.name} 
                                                     <span className='px-4'>plot number:- {subEvent.spaceNumber}</span>
-                                                        <div className='flex flex-row'>
 
-                                                            <div className='font-semibold'> Duration :
-                                                            </div>
+                                                            <div className='font-medium gap-2 flex '> Duration :
                                                             <div className='font-normal '>
                                                                 {subEvent.duration}
                                                             </div>
-                                                        </div></li>
+                                                            </div>
+                                                        </li>
                                                 ))}
                                             </ul>
                                         </div>

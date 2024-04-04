@@ -172,23 +172,46 @@ def register_event(request):
 @csrf_exempt
 def get_registered_events(request):    
     try:
-        registered_events = RegisteredEvent.objects.all()
-        event_list = []
+        registered_events = RegisteredEvent.objects.values('event_name', 'sub_event_name', 'username').distinct()
+        unique_events_dict = {}  # Dictionary to store unique events based on event name
+
         for event in registered_events:
-            sub_event = SubEvent.objects.get(name=event.sub_event_name, event__name=event.event_name)
-            event_data = {
-                'id': event.id,
-                'username': event.username,
-                'subEventName': event.sub_event_name,
-                'eventName': event.event_name,
-                'spaceNumber': sub_event.space_number
-            }
-            event_list.append(event_data)
-            print(event.username)
+            event_key = event['event_name']
+
+            # Check if the event key already exists in the dictionary
+            if event_key not in unique_events_dict:
+                unique_events_dict[event_key] = {
+                    'eventName': event['event_name'],
+                    'usernames': [[event['username'], event['sub_event_name']]]  # Include both username and sub-event name as a list
+                }
+            else:
+                # If the event key already exists, append the [username, sub-event name] list to the existing list
+                unique_events_dict[event_key]['usernames'].append([event['username'], event['sub_event_name']])
+
+        # Convert the dictionary values to a list
+        event_list = list(unique_events_dict.values())
 
         return JsonResponse(event_list, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+# @csrf_exempt
+# def get_registered_events(request):    
+#     try:
+#         registered_events = RegisteredEvent.objects.values('event_name', 'sub_event_name').distinct()
+#         event_list = []
+#         for event in registered_events:
+#             event_data = {
+#                 'eventName': event['event_name'],
+#                 'subEventName': event['sub_event_name']
+                
+#             }
+#             event_list.append(event_data)
+
+#         return JsonResponse(event_list, safe=False)
+#     except Exception as e:
+#         return JsonResponse({'error': str(e)}, status=500)
+
 
 
 @csrf_exempt
