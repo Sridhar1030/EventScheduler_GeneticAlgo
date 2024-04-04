@@ -18,7 +18,7 @@ from .models import RegisteredEvent
 from django.http import JsonResponse
 from .round import create_round, determine_round_winners
 from .models import RegisteredEvent
-
+import random
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -232,7 +232,7 @@ def run_genetic_algorithm(request):
 
 
 
-@csrf_exempt            
+@csrf_exempt
 def tournament_schedule_view(request, event_name):
     if request.method == 'POST':
         try:
@@ -248,12 +248,29 @@ def tournament_schedule_view(request, event_name):
             # Extract usernames from the registered events
             players = [event['username'] for event in registered_events]
 
-            # Call the algorithm functions to schedule the tournament matches
-            round_matches = create_round(players)
-            winners = determine_round_winners(round_matches)
+            # Keep track of winners for each round
+            all_round_winners = []
 
-            # Return the tournament schedule with the winners
-            return JsonResponse({'round_matches': round_matches, 'winners': winners}, status=200)
+            # Continue playing rounds until there's only one winner left
+            while len(players) > 1:
+                # Create round matches
+                round_matches = create_round(players[::-1])  # Reverse array before each round
+
+                # Determine winners for the round
+                winner_data = {}
+                for i, match in enumerate(round_matches, start=1):
+                    # Simulate random winner selection
+                    winner_data[f"match_{i}"] = random.choice(match)
+
+                # Keep track of winners for this round
+                round_winners = determine_round_winners(round_matches, winner_data)
+                all_round_winners.append(round_winners)
+
+                # Eliminate players who lost in the current round
+                players = round_winners
+
+            # Return all round matches and winners
+            return JsonResponse({'round_matches': round_matches, 'all_round_winners': all_round_winners}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
