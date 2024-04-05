@@ -2,12 +2,13 @@ import { set } from "date-fns";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 const AuthContext = createContext();
+import { jwtDecode } from "jwt-decode";
 
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
     const [authTokens, setAuthTokens] = useState(() => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null);
-    const [user, setUser] = useState(() => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null);
+    const [user, setUser] = useState(() => localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null);
     let [loading , setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -27,10 +28,10 @@ export const AuthProvider = ({ children }) => {
                 let data = await response.json();
                 if (response.status === 200) {
                     setAuthTokens(data);
-                    console.log(data.access);
-                    setUser('data.user')
+                    setUser(jwtDecode(data.access));
+
                     localStorage.setItem('authTokens', JSON.stringify(data));
-                    navigate('/home')
+                    navigate('/')
                 } else {
                     alert("Login Failed");
                 }
@@ -44,6 +45,33 @@ export const AuthProvider = ({ children }) => {
             console.error('Error during login:', error);
         }
     };
+
+    let registerUser = async (e) => {
+        e.preventDefault();
+        try {
+            let response = await fetch('http://127.0.0.1:8000/api/register-user/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'username': e.target.username.value, 'password': e.target.password.value, 'email': e.target.email.value })
+            });
+
+            
+                let data = await response.json();
+                if (response.status === 200) {
+                    alert(data);
+                    navigate('/login')
+                } else {
+                    alert("Login Failed");
+                }
+        }
+        catch (error) {
+            console.error('Error during login:', error);
+        }
+    }
+
+
 
     let logoutUser = () => {
 
@@ -80,6 +108,7 @@ export const AuthProvider = ({ children }) => {
         user: user,
         loginUser: loginUser,
         logoutUser: logoutUser,
+        registerUser: registerUser,
     };
 
     useEffect(() => {

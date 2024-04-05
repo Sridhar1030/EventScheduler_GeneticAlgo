@@ -21,6 +21,9 @@ from .models import RegisteredEvent
 import random
 
 
+from django.contrib.auth.models import User, make_password
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -28,6 +31,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['username'] = user.username
+        token['email'] = user.email
+        token['is_staff'] = user.is_staff
+        token['is_superuser'] = user.is_superuser
         # ...
 
         return token
@@ -49,7 +55,21 @@ def getRoutes(request):
 
 
 
-
+@csrf_exempt
+def registerUser(request):
+    
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            user = User.objects.create(
+                username = data['username'],
+                email = data['email'],
+                password = make_password(data['password'])
+            )
+            return JsonResponse(f'{user.username} registered successfully', safe=False)
+        except:
+            return JsonResponse('User was not created', safe=False)
+    
 
 
 
