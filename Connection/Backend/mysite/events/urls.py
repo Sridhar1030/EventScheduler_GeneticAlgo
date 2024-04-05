@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_event, get_events, register_event, get_sub_events, clear_database, get_registered_events,getRoutes,run_genetic_algorithm,tournament_schedule_view  # Import the run_genetic_algorithm view
+from .views import create_event, get_events, register_event,registerUser, get_sub_events, clear_database, get_registered_events,getRoutes,run_genetic_algorithm,tournament_schedule_view  # Import the run_genetic_algorithm view
 from .views import MyTokenObtainPairView
 
 from rest_framework_simplejwt.views import (
@@ -15,6 +15,7 @@ urlpatterns = [
     path ('',getRoutes, name='routes'),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register-user/', registerUser, name='register_user'),
     path('create-event/', create_event, name='create_event'),
     path('get-events/', get_events, name='get_events'),
     path('clear-database/', clear_database, name='clear_database'),

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import AuthContext from '../../../Context/AuthContext';
 
 const Create = () => {
     const [step, setStep] = useState(1);
@@ -14,6 +15,18 @@ const Create = () => {
     const [customSubEvent, setCustomSubEvent] = useState('');
     const [subEventDuration, setSubEventDuration] = useState('');
     const [spaceNumber, setSpaceNumber] = useState('');
+
+
+    const {user} = useContext(AuthContext);
+
+    useEffect(() => {
+        const checkUser = () => {
+            if(!user.is_superuser){
+                window.location.href = '/';
+            }
+        }
+        checkUser();
+    },[user])
 
     const handleNext = () => {
         setStep(step + 1);

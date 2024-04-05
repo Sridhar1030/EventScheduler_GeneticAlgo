@@ -13,6 +13,7 @@ import Genetic from './assets/components/Genetic/Genetic';
 import { AuthProvider } from './Context/AuthContext';
 import Navbar from './assets/components/Navbar/Navbar';
 import Private from './assets/components/Private/Private';
+import Register from './assets/components/Registration/Register';
 
 
 function App() {
@@ -41,8 +42,9 @@ function App() {
 
 
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
-            {/* <Route path="/" element={<Private />}> */}
+            <Route path="/" element={<Private />}> 
 
               <Route path="/" element={<Home />} />
               <Route path="/create" element={<Create />} />
@@ -66,7 +68,7 @@ function App() {
               ))}
               <Route path="/enrolled" element={<YourEvents />} />
               <Route path="/DELETE" element={<Delete />} />
-            {/* </Route> */}
+            </Route>
 
           </Routes>
         </AuthProvider>

@@ -1,23 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from '../../../Context/AuthContext';
 
 const Private = () => {
-    const [token, setToken] = useState(null);
-
-    useEffect(() => {
-        const fetchToken = () => {
-            const storedToken = localStorage.getItem('authTokens');
-            if (storedToken) {
-                setToken(JSON.parse(storedToken));
-            }
-        };
-        fetchToken();
-    }, []);
+    
+    const {user} = useContext(AuthContext)
 
     return (
         <>
-            {token?.refresh ? <Outlet /> : <Navigate to="/login" />}
+            {user ? <Outlet /> : <Navigate to="/login" />}
         </>
     );
 };
