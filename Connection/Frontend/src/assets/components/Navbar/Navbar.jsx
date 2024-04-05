@@ -14,7 +14,7 @@ function Navbar() {
             <div className="flex items-center align-middle justify-start space-x-11 h-20">
                 <div className="flex justify-center align-middle">
                     <button>
-                        <Link to="/home" className="text-2xl flex justify-center align-middle items-center">
+                        <Link to="/" className="text-2xl flex justify-center align-middle items-center">
                             <img className='flex size-11  ' src={image} alt="" />
                             <p className='font-bold hover:text-[#ffffff]'>
 

@@ -44,7 +44,7 @@ function App() {
 
             {/* <Route path="/" element={<Private />}> */}
 
-              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="/create" element={<Create />} />
               <Route path="/event" element={<Event />} />
               <Route path="/schedule" element={<Scheduler />} />

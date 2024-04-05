@@ -28,12 +28,12 @@ const YourEvents = () => {
                 {registeredEvents.map(event => (
                     <div
                         key={`${event.eventName}-${event.subEventName}`}
-                        className='border gap-10 w-96 h-auto mx-auto mt-10 mb-10 bg-blue-300 relative transition duration-300 ease-in-out'
+                        className='border gap-10 w-96 h-auto mx-auto mt-10 mb-10 bg-blue-300 relative transition duration-300 ease-in-out '
                     >
                         <div className='font-bold '>
                             <h2 className='pt-4 ml-7'>Event Name: {event.eventName}</h2>
                             <h2 className='ml-7'>Usernames:</h2>
-                            <ul className='ml-7 '>
+                            <ul className='ml-7 mb-3'>
                                 {event.usernames.map(([username, subEventName], index) => (
                                     <li  key={index}>{username} subevent: {subEventName}</li>
                                 ))}
