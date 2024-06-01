@@ -17,7 +17,8 @@ const Home = () => {
                         <div className="flex 3
                         flex-col justify-center">
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                                Welcome to Our Website {user.username} {user.is_superuser ? 'Admin' : ''}
+                                Welcome to <div className='font-serif p-1'>RoundGen</div> a scheduling website 
+                                {/* {user.username} {user.is_superuser ? 'Admin' : ''} */}
                             </h1>
                             <p className="text-lg">
                                 Event Scheduler
