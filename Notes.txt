@@ -1,0 +1,16 @@
+add subevent time 
+Subevent Name: A unique identifier for each subevent.
+Start Time: The starting time of each subevent.
+End Time: The ending time of each subevent.
+Duration: The duration of each subevent (computed as end time - start time).
+Date: The date on which each subevent occurs.
+Dependencies: Information about any dependencies between subevents, such as one subevent needing to occur before another.
+Resources Required: Any resources (e.g., rooms, equipment, staff) needed for each subevent.
+Constraints: Any constraints or limitations on the scheduling of subevents, such as maximum duration, minimum time between subevents, or available time slots.
+
+
+
+
+add subevent number of players 
+
+Implement roundrobin scheduling 

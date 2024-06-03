@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
-
-
-
-
-//Location.state gives the Event Index from Event.jsx to EventForm.jsx
-
-
-
+import Navbar from '../Navbar/Navbar';
 
 function EventForm() {
     const location = useLocation();
     const eventIndex = location.state ? location.state.eventIndex : '';
     const eventName = location.state ? location.state.eventName : '';
-    console.log("location state " , location.state)
 
     const [formData, setFormData] = useState({
         username: '', // Add username state
         eventName: '', // Add eventName state
         subEventName: '', // Add subEventName state
+        space_number: '', // Add spaceNumber state
     });
-
-
+    
 
     const [subEvents, setSubEvents] = useState([]); // State to store sub-events
     useEffect(() => {
@@ -39,7 +31,19 @@ function EventForm() {
                         }));
                         axios.get(`http://127.0.0.1:8000/api/get-sub-events/${selectedEventName}/`)
                             .then(subEventResponse => {
-                                setSubEvents(subEventResponse.data);
+                                console.log('Sub-events:', subEventResponse.data);
+                                const subEventsData = subEventResponse.data;
+                                setSubEvents(subEventsData);
+                                
+                                // Find the selected sub event
+                                const selectedSubEvent = subEventsData.find(subEvent => subEvent.name === formData.subEventName);
+                                if (selectedSubEvent) {
+                                    // Set the space number from the selected sub event
+                                    setFormData(prevFormData => ({
+                                        ...prevFormData,
+                                        space_number: selectedSubEvent.spaceNumber
+                                    }));
+                                }
                             })
                             .catch(error => {
                                 console.error('Error fetching sub-events:', error);
@@ -52,33 +56,37 @@ function EventForm() {
                     console.error('Error fetching events:', error);
                 });
         }
-    }, [eventIndex]);
+    }, [eventIndex, eventName, formData.subEventName]);
     
-
     
     const handleChange = (e) => {
+        console.log('Event target:', e.target);
+        console.log('Form data before update:', formData);
         setFormData({
             ...formData,
-            [e.target.id]: e.target.value
+            [e.target.id]: e.target.value,
+            space_number: e.target.id === "subEventName" ? subEvents.find(subEvent => subEvent.name === e.target.value).space_number : formData.space_number
         });
+        console.log('Form data after update:', formData);
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-        axios.post('http://127.0.0.1:8000/api/register-event/', formData)
-            .then(response => {
-                console.log(response.data);
-                // Handle success, e.g., show a success message or redirect
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle error, e.g., show an error message
-            });
-    };
+    
+const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData); // Add this line to log formData
+    axios.post('http://127.0.0.1:8000/api/register-event/', formData)
+        .then(response => {
+            console.log("hi" ,response.data);
+            // Handle success
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error
+        });
+};
 
     return (
         <div className='bg-black h-screen text-white'>
+            <Navbar/>
             <div className='w-full h-10'></div>
             <div className='flex flex-col top-10'>
                 <h2 className='text-center text-4xl top-10 gap-10 mb-10'>Event Form for {formData.eventName}</h2>
@@ -91,13 +99,14 @@ function EventForm() {
                 <div className="mb-5 gap-10">
                     <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                     <input type="text" id="username" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={handleChange} />
+
                 </div>
                 <div className="mb-5 gap-10">
                     <label htmlFor="subEventName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub Event Name</label>
                     <select id="subEventName" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={handleChange}>
                         <option value="">Select a sub-event</option>
                         {subEvents.map((subEvent, index) => (
-                            <option key={index} value={subEvent}>{subEvent}</option>
+                            <option key={index} value={subEvent.name}>{subEvent.name}</option>
                         ))}
                     </select>
                 </div>

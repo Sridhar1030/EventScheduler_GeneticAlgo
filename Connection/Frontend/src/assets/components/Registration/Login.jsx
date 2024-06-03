@@ -1,57 +1,40 @@
+import React, { useContext, useEffect } from 'react';
+import AuthContext from '../../../Context/AuthContext';
+import { Link } from 'react-router-dom';
 
+const LoginPage = () => {
+    let { loginUser, user } = useContext(AuthContext);
 
-import React, { useState } from 'react';
-
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your login logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
-    };
+    useEffect(() => {
+        const checkUser = () => {
+            if(user){
+                window.location.href = '/';
+            }
+        }
+        checkUser();
+    },[user])
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-                </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <input type="hidden" name="remember" value="true" />
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <label htmlFor="email-address" className="sr-only">Email address</label>
-                            <input id="email-address" name="email" type="email" autoComplete="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="password" className="sr-only">Password</label>
-                            <input id="password" name="password" type="password" autoComplete="current-password" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-
-
-                        <div className="text-sm">
-                            {/* <a href="" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                Forgot your password?
-                            </a> */}
-                        </div>
-                    </div>
-
+        <div className="flex justify-center items-center h-screen bg-gray-100">
+            <div className="bg-white p-8 rounded-lg shadow-md">
+                <h2 className="text-2xl font-bold mb-4">Login</h2>
+                <form onSubmit={loginUser} className="space-y-4">
                     <div>
-                        <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            
-                            Sign in
-                        </button>
+                        <label htmlFor="username" className="block font-semibold">Username</label>
+                        <input type="text" name="username" id="username" className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500" placeholder="Enter Username" required />
                     </div>
+                    <div>
+                        <label htmlFor="password" className="block font-semibold">Password</label>
+                        <input type="password" name="password" id="password" className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500" placeholder="Enter Password" required />
+                    </div>
+                    <button type="submit" className="w-full px-4 py-2 mt-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Login</button>
                 </form>
+                <div className='text-center'>
+                    <p className='mt-4'>Don't have an account? <Link to="/register" className='text-blue-500'>Register</Link></p>
+                </div>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default LoginPage;
