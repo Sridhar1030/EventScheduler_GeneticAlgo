@@ -85,7 +85,7 @@ const handleSubmit = (e) => {
 };
 
     return (
-        <div className='bg-black h-screen text-white'>
+        <div className='bg-black h-full text-white'>
             <Navbar/>
             <div className='w-full h-10'></div>
             <div className='flex flex-col top-10'>

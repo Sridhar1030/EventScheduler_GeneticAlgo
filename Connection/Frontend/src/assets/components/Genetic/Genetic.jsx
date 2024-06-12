@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import { Link } from 'react-router-dom';
 
 const Genetic = () => {
     const location = useLocation();
@@ -82,8 +83,6 @@ const Genetic = () => {
             });
     };
 
-
-
     // Helper function to format time (assuming time is in 24-hour format)
     const formatTime = (time) => {
         const hours = Math.floor(time);
@@ -91,81 +90,63 @@ const Genetic = () => {
         return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
     }
 
-    // Calculate start and end times for each subevent based on event start time and durations
-    // Calculate start and end times for each subevent based on event start time and durations
-    const calculateEventTimes = () => {
-        if (!bestSchedule || !bestSchedule.events) return []; // Add this check
-        let currentTime = parseFloat(startTime);
-        const sortedEvents = bestSchedule.events.slice().sort((a, b) => a.startTime - b.startTime); // Sort events by start time
-        return sortedEvents.map(subEvent => {
-            const correspondingEvent = subEvents.find(event => event.name === subEvent.name);
-            if (correspondingEvent) {
-                const startTime = currentTime;
-                const endTime = currentTime + correspondingEvent.duration;
-                currentTime = endTime;
-                return { ...correspondingEvent, startTime, endTime, spaceNumber: subEvent.space_number };
-            }
-            return subEvent;
-        });
-    };
-
-
-
-
     return (
         <>
             <Navbar />
             <div className='bg-[#0D1117] text-white h-full min-h-screen'>
-
-            <h1 className='text-3xl text-center sticky  underline font-bold'>Genetic Algorithm</h1>
-            <div className='flex justify-center items-center mt-32'>
-                <div className='border-2 border-white p-10 cursor-pointer rounded-md hover:border-blue-500 hover:scale-110 transition duration-500'>
-                    <div className=''>
-                        <div className='font-bold underline text-2xl'>
-                            Event Name : {event}
-                        </div>
-                        <div className='flex flex-col'>
-                            <h2 className='font-semibold mt-4'>Subevents:</h2>
-                            {subEvents.map((subEvent, index) => (
-                                <tr key={index} className="">
-                                    <td className="border border-gray-400 p-2 w-60">{subEvent.name}</td>
-                                    <td className="border border-gray-400 p-2">{subEvent.duration}</td>
-                                </tr>
-                            ))}
+                <h1 className='text-3xl text-center sticky underline font-bold'>Genetic Algorithm</h1>
+                <div className='flex justify-center items-center mt-32'>
+                    <div className='border-2 border-white p-10 cursor-pointer rounded-md hover:border-blue-500 hover:scale-110 transition duration-500'>
+                        <div>
+                            <div className='font-bold underline text-2xl'>
+                                Event Name: {event}
+                            </div>
+                            <div className='flex flex-col'>
+                                <h2 className='font-semibold mt-4'>Subevents:</h2>
+                                {subEvents.map((subEvent, index) => (
+                                    <div key={index} className="">
+                                        <div className="border border-gray-400 p-2 w-60">{subEvent.name}</div>
+                                        <div className="border border-gray-400 p-2">{subEvent.duration}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="mt-8 flex flex-col justify-center mx-auto text-center w-96 h-96 ">
-                <h1>Genetic Algorithm</h1>
-                <h2 className="font-semibold">Subevents Table:</h2>
-                <table className="border-collapse border border-gray-400 mt-2">
-                    <thead>
-                        <tr>
-                            <th className="border border-gray-400 p-2">Subevent</th>
-                            <th className="border border-gray-400 p-2">Duration</th>
-                            <th className="border border-gray-400 p-2">Start Time</th>
-                            <th className="border border-gray-400 p-2">End Time</th>
-                            <th className="border border-gray-400 p-2">Space Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bestSchedule.events && bestSchedule.events.map((updatedBestSchedule, index) => (
-                            <tr key={index} className="hover:bg-black hover:text-lg transition duration-150">
-                                <td className="border border-gray-400 p-2">{updatedBestSchedule.name}</td>
-                                <td className="border border-gray-400 p-2">{updatedBestSchedule.duration}</td>
-                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time)}</td>
-                                <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time+updatedBestSchedule.duration)}</td>
-                                <td className="border border-gray-400 p-2">{updatedBestSchedule.space_number}</td>
+                <div className="mt-8 flex flex-col justify-center mx-auto text-center w-96 h-96 ">
+                    <h1>Genetic Algorithm</h1>
+                    <h2 className="font-semibold">Subevents Table:</h2>
+                    <table className="border-collapse border border-gray-400 mt-2">
+                        <thead>
+                            <tr>
+                                <th className="border border-gray-400 p-2">Subevent</th>
+                                <th className="border border-gray-400 p-2">Duration</th>
+                                <th className="border border-gray-400 p-2">Start Time</th>
+                                <th className="border border-gray-400 p-2">End Time</th>
+                                <th className="border border-gray-400 p-2">Space Number</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {bestSchedule.events && bestSchedule.events.map((updatedBestSchedule, index) => (
+                                <tr key={index} className="hover:bg-black hover:text-lg transition duration-150">
+                                    <td className="border border-gray-400 p-2">{updatedBestSchedule.name}</td>
+                                    <td className="border border-gray-400 p-2">{updatedBestSchedule.duration}</td>
+                                    <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time)}</td>
+                                    <td className="border border-gray-400 p-2">{formatTime(updatedBestSchedule.start_time + updatedBestSchedule.duration)}</td>
+                                    <td className="border border-gray-400 p-2">{updatedBestSchedule.space_number}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <button className='flex align-middle justify-center mx-auto'>
+                        <Link to="/round" className="hover:text-xl hover:text-white">See round robin</Link>
+                    </button>
+                </div>
             </div>
-                        </div>
         </>
     );
-    
 }
 
 export default Genetic;

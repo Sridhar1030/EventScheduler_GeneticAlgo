@@ -14,6 +14,7 @@ import { AuthProvider } from './Context/AuthContext';
 import Navbar from './assets/components/Navbar/Navbar';
 import Private from './assets/components/Private/Private';
 import Register from './assets/components/Registration/Register';
+import Round from './assets/components/Round/Round';
 
 
 function App() {
@@ -66,8 +67,10 @@ function App() {
                 />
 
               ))}
+              <Route path='/round' element={<Round/>}/>
               <Route path="/enrolled" element={<YourEvents />} />
               <Route path="/DELETE" element={<Delete />} />
+              
             </Route>
 
           </Routes>
