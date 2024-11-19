@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <Router>
-        <AuthProvider>
+        
           <Routes>
             {/* Define routes for different components */}
 
@@ -74,7 +74,7 @@ function App() {
             </Route>
 
           </Routes>
-        </AuthProvider>
+  
       </Router>
     </>
   )
