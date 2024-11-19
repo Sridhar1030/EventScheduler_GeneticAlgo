@@ -23,5 +23,5 @@ urlpatterns = [
     path('register-event/', register_event, name='register_event'),
     path('get-sub-events/<str:event_name>/', get_sub_events, name='get_sub_events'),
     path('run-genetic-algorithm/', run_genetic_algorithm, name='run_genetic_algorithm'),
-    path('tournament/<str:event_name>/', tournament_schedule_view, name='tournament_schedule'),# Add this URL pattern
+    path('tournament/<str:event_name>/', tournament_schedule_view, name='tournament_schedule'),
 ]

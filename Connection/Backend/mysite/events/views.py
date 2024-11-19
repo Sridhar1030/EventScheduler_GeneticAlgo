@@ -7,14 +7,11 @@ from django.utils import timezone
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import RegisteredEvent
-
-
 from django.http import JsonResponse
 from .round import create_round, determine_round_winners
 from .models import RegisteredEvent
@@ -215,25 +212,9 @@ def get_registered_events(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-# @csrf_exempt
-# def get_registered_events(request):    
-#     try:
-#         registered_events = RegisteredEvent.objects.values('event_name', 'sub_event_name').distinct()
-#         event_list = []
-#         for event in registered_events:
-#             event_data = {
-#                 'eventName': event['event_name'],
-#                 'subEventName': event['sub_event_name']
-                
-#             }
-#             event_list.append(event_data)
-
-#         return JsonResponse(event_list, safe=False)
-#     except Exception as e:
-#         return JsonResponse({'error': str(e)}, status=500)
 
 
-
+#Genetic Algorithm 
 @csrf_exempt
 def run_genetic_algorithm(request):
     if request.method == 'POST':
@@ -274,7 +255,7 @@ def run_genetic_algorithm(request):
 
 
 
-
+#Round Robin and Single elimination tournament
 @csrf_exempt
 def tournament_schedule_view(request, event_name):
     if request.method == 'POST':

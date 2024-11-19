@@ -157,7 +157,7 @@ const Create = () => {
 
             case 3:
                 return (
-                    <div>
+                    <div className=''>
                         {/* Sub Event Name */}
                         <div className='mt-10 flex gap-3 justify-center items-center flex-col '>
                             <input
@@ -213,8 +213,8 @@ const Create = () => {
     return (
         <div className='bg-[#0D1117] h-screen bottom-0'>
             <Navbar />
-            <div className='flex justify-center align-middle items-center '>
-                <div className="w-72 mt-20 flex flex-col justify-center items-center align-middle ">
+            <div className='h-full bg-black flex justify-center align-middle items-center '>
+                <div className="h-full bg-black  w-72 mt-20  justify-center items-center align-middle ">
                     {renderStep()}
                     <div className='mt-10 flex gap-3 justify-center items-center'>
                         {step > 1 && (
