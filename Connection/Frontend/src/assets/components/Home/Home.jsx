@@ -5,7 +5,6 @@ import svg from '../../Gif/SVG.svg'
 import { Link } from 'react-router-dom';
 import AuthContext from '../../../Context/AuthContext';
 const Home = () => {
-    let { user } = useContext(AuthContext);
 
     return (
         <div className="flex flex-col min-h-screen bg-[#0D1117] text-white ">
