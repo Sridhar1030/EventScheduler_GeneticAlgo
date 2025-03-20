@@ -14,6 +14,7 @@ import Navbar from './assets/components/Navbar/Navbar';
 import Register from './assets/components/Registration/Register';
 import Round from './assets/components/Round/Round';
 import { AuthProvider } from './Context/AuthContext';
+import AdminNav from './assets/components/Navbar/AdminNav';
 function App() {
   const [events, setEvents] = useState([]);
 
@@ -35,6 +36,7 @@ function App() {
         <AuthProvider>
 
         {/* <Navbar /> */}
+        {/* <AdminNav /> */}
         <Routes>
           {/* Define routes for different components */}
           <Route path="/login" element={<Login />} />
