@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Scheduler = () => {
     const [events, setEvents] = useState([]);
@@ -20,67 +21,113 @@ const Scheduler = () => {
     }, []);
 
     return (
-        <>
+        <div className="flex flex-col min-h-screen bg-[#f5f7fa] dark:bg-[#1a1c2e] text-[#1a1c2e] dark:text-white">
             <Navbar />
-            <div className=' h-full min-h-screen bg-[#0D1117]  text-white'>
-                <h1 className='text-3xl text-center sticky'>Scheduler</h1>
-                <div className='ml-10 flex flex-wrap gap-10 mt-10 '>
+            
+            <div className="container mx-auto px-6 pt-24 pb-16">
+                <motion.h1 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-3xl md:text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-[#5e7ce2] to-[#4a69d2]"
+                >
+                    Event Scheduler
+                </motion.h1>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {events.map((event, index) => (
-                        <Link
-                            to={`/genetic/${event.name}`}
-                            state={{ eventIndex: index }}
+                        <motion.div
                             key={event.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
-                            <div className='h-'>
-                                <div className='cursor-pointer border-2 border-[#e0cece] h-[450px] w-96 mb-4 p-4 rounded transition duration-300 ease-in-out transform hover:scale-105'>
-                                    <div className='flex gap-3'>
-                                        <div><h2>Event Name : </h2></div>
-                                        {/* Check if the property name is 'eventName' */}
-                                        <div className='font-semibold capitalize'>{event.name}</div>
+                            <Link
+                                to={`/genetic/${event.name}`}
+                                state={{ eventIndex: index }}
+                                className="block h-full"
+                            >
+                                <div className="h-full p-6 rounded-xl bg-white dark:bg-[#262940] border border-[#e1e6f0] dark:border-[#32374f] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                                    <div className="mb-4 pb-3 border-b border-[#e1e6f0] dark:border-[#32374f]">
+                                        <h2 className="text-xl font-bold text-[#3a4980] dark:text-[#a5b4e3] capitalize mb-1">
+                                            {event.name}
+                                        </h2>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <h3>Start Date:</h3> {event.date}
+                                    
+                                    <div className="space-y-3 text-[#505565] dark:text-[#a3adc2]">
+                                        <div className="flex items-center space-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#5e7ce2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <div>
+                                                <span className="text-sm">Start: </span>
+                                                <span className="font-medium">{event.date}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex items-center space-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#5e7ce2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <div>
+                                                <span className="text-sm">End: </span>
+                                                <span className="font-medium">{event.endEventDate}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex items-center space-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#5e7ce2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <div>
+                                                <span className="text-sm">Time: </span>
+                                                <span className="font-medium">{event.startTime} - {event.end_Time}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className='flex gap-2'>
-                                        <h3>End Date:</h3> {event.endEventDate}
-                                    </div>
-
-                                    {/* Check if the property name is 'subEvents' */}
+                                    
                                     {/* Display sub-events if available */}
                                     {event.subEvents && event.subEvents.length > 0 && (
-                                        <div>
-                                            <h2>Sub Events:</h2>
-                                            <ul>
-                                                {event.subEvents.map(subEvent => (
-                                                    <li key={subEvent.name} className='font-semibold'>{subEvent.name} 
-                                                    <span className='px-4'>plot number:- {subEvent.spaceNumber}</span>
-
-                                                            <div className='font-medium gap-2 flex '> Duration :
-                                                            <div className='font-normal '>
-                                                                {subEvent.duration}
+                                        <div className="mt-4 pt-3 border-t border-[#e1e6f0] dark:border-[#32374f]">
+                                            <h3 className="font-medium text-[#3a4980] dark:text-[#a5b4e3] mb-2">Sub Events:</h3>
+                                            <ul className="space-y-1 text-[#505565] dark:text-[#a3adc2]">
+                                                {event.subEvents.slice(0, 3).map(subEvent => (
+                                                    <li key={subEvent.name} className="flex items-start">
+                                                        <span className="w-2 h-2 rounded-full bg-[#5e7ce2] mr-2 mt-1.5"></span>
+                                                        <div>
+                                                            <span className="font-medium">{subEvent.name}</span>
+                                                            <div className="text-xs text-[#727888] dark:text-[#8996b8]">
+                                                                Duration: {subEvent.duration}
                                                             </div>
-                                                            </div>
-                                                        </li>
+                                                            {subEvent.spaceNumber && (
+                                                                <div className="text-xs text-[#727888] dark:text-[#8996b8]">
+                                                                    Plot: {subEvent.spaceNumber}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </li>
                                                 ))}
+                                                {event.subEvents.length > 3 && (
+                                                    <li className="text-xs text-[#5e7ce2]">
+                                                        +{event.subEvents.length - 3} more sub-events
+                                                    </li>
+                                                )}
                                             </ul>
                                         </div>
                                     )}
-                                    <div>
-                                        <div className='font-medium underline'>
-                                            EVENT TIME
-                                        </div>
-                                        <div className='font-semibold'>
-                                            {/* Check if the property names are 'startTime' and 'endTime' */}
-                                            {event.startTime} to {event.end_Time}
+                                    
+                                    <div className="mt-6 flex justify-end">
+                                        <div className="text-sm text-white px-4 py-2 rounded-lg bg-gradient-to-r from-[#5e7ce2] to-[#4a69d2]">
+                                            Generate Schedule
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
+                            </Link>
+                        </motion.div>
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

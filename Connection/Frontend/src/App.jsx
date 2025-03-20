@@ -13,7 +13,7 @@ import Genetic from './assets/components/Genetic/Genetic';
 import Navbar from './assets/components/Navbar/Navbar';
 import Register from './assets/components/Registration/Register';
 import Round from './assets/components/Round/Round';
-
+import { AuthProvider } from './Context/AuthContext';
 function App() {
   const [events, setEvents] = useState([]);
 
@@ -32,7 +32,9 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar />
+        <AuthProvider>
+
+        {/* <Navbar /> */}
         <Routes>
           {/* Define routes for different components */}
           <Route path="/login" element={<Login />} />
@@ -43,22 +45,23 @@ function App() {
           <Route path="/schedule" element={<Scheduler />} />
           {events.map((event) => (
             <Route
-              key={event.id}
-              path={`/${event.name}`}
-              element={<EventForm eventName={event.name} />}
+            key={event.id}
+            path={`/${event.name}`}
+            element={<EventForm eventName={event.name} />}
             />
           ))}
           {events.map((event) => (
             <Route
-              key={event.id}
-              path={`/genetic/${event.name}`}
-              element={<Genetic eventName={event.name} />}
+            key={event.id}
+            path={`/genetic/${event.name}`}
+            element={<Genetic eventName={event.name} />}
             />
           ))}
           <Route path="/round" element={<Round />} />
           <Route path="/enrolled" element={<YourEvents />} />
           <Route path="/DELETE" element={<Delete />} />
         </Routes>
+          </AuthProvider>
       </Router>
     </>
   );
