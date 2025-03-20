@@ -3,6 +3,7 @@
 import django.db.models.deletion
 import django.utils.timezone
 from django.db import migrations, models
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -22,7 +23,12 @@ class Migration(migrations.Migration):
                 ('another_date', models.DateField(default=django.utils.timezone.now)),
                 ('time', models.DateTimeField(default=django.utils.timezone.now)),
                 ('endtime', models.DateTimeField(default=django.utils.timezone.now)),
+                ('time', models.DateTimeField(default=django.utils.timezone.now)),
+                ('endtime', models.DateTimeField(default=django.utils.timezone.now)),
             ],
+            options={
+                'managed': True,
+            },
             options={
                 'managed': True,
             },
@@ -45,6 +51,18 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('duration', models.IntegerField(default=0)),
                 ('space_number', models.PositiveIntegerField(default=0)),
+                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subevents', to='events.event')),
+                ('username', models.CharField(max_length=150)),
+                ('sub_event_name', models.CharField(max_length=255)),
+                ('event_name', models.CharField(max_length=255)),
+                ('time', models.DateTimeField(default=django.utils.timezone.now)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='SubEvent',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=255)),
                 ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subevents', to='events.event')),
             ],
         ),

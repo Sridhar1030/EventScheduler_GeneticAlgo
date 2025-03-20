@@ -5,5 +5,3 @@ admin.site.register(Event)
 admin.site.register(SubEvent)
 admin.site.register(RegisteredEvent)
 
-
-
